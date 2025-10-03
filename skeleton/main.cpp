@@ -7,7 +7,8 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
-
+#include "Sphere.h"
+#include "Vector3D.h"
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -54,6 +55,12 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+	//Sphere* s = new Sphere(5, {1,1,1},{1,0,0,1});
+	Vector3D* v = new Vector3D( { 15,15,15 });
+	Sphere* s = new Sphere(4,{0,0,0},{1,1,1,1});
+	Sphere* s2 = new Sphere(4,{v->getX(),0,0},{1,0,0,1});
+	Sphere* s3 = new Sphere(4,{0,v->getY(),0},{0,1,0,1});
+	Sphere* s4 = new Sphere(4,{0,0,v->getZ()},{0,0,1,1});
 	}
 
 
@@ -62,8 +69,8 @@ void initPhysics(bool interactive)
 // t: time passed since last call in milliseconds
 void stepPhysics(bool interactive, double t)
 {
+	
 	PX_UNUSED(interactive);
-
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }
@@ -115,6 +122,7 @@ int main(int, const char*const*)
 {
 #ifndef OFFLINE_EXECUTION 
 	extern void renderLoop();
+	
 	renderLoop();
 #else
 	static const PxU32 frameCount = 100;
