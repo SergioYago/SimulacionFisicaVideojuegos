@@ -1,11 +1,16 @@
 #include "Particle.h"
-Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 Accel)
+#include <iostream>
+#include <fstream>
+
+
+Particle::Particle(Vector3D Pos, Vector3D Vel, Vector3D Accel)
 {
+
 	vel = Vel;
 	accel = Accel;
-	pos.p = Pos;
+	pos.p = { Pos.x,Pos.y,Pos.z};
 	pos.q = { 0,0,0,0 };
-	item = new RenderItem(CreateShape(PxSphereGeometry(10)), &pos, { 1,1,1,1 });
+	item = new RenderItem(CreateShape(PxSphereGeometry(1)), &pos, { 1,1,1,1 });
 }
 
 Particle::~Particle()
@@ -16,14 +21,14 @@ Particle::~Particle()
 
 void Particle::integrate(double t)
 {
-	pos.p += vel * t;
+	
+	pos.p.x=vel.x*t;
+	pos.p.y=vel.y*t;
+	pos.p.z=vel.z*t;
 	vel += accel * t;
-	vel *= pow(damping, t);
-	accel *= pow(damping, t);
+	vel =vel* pow(damping, t);
+	accel = accel* pow(damping, t);
 }
 
-void Particle::update(double t)
-{
-	
-}
+
 

@@ -10,31 +10,28 @@ public:
 	Vector3D(Vector3 v);
 	
 	~Vector3D();
-	float getX() {
-		return x;
-	};
-	float getY() { return y; }
-	float getZ() { return z; }
+	float x, y, z;
 	void operator=(Vector3D other)
 	{
-		x = other.getX();
-		y = other.getY();
-		z = other.getZ();
+		x = other.x;
+		y = other.y;
+		z = other.z;
 	};
 	void operator +=(Vector3D other)
 	{
-		x = x + other.getX();
-		y = y + other.getY();
-		z = z + other.getZ();
+		x = x + other.x;
+		y = y + other.y;
+		z = z + other.z;
 	}
 	Vector3D operator +(Vector3D other)
 	{
 		Vector3D aux({0,0,0});
-		aux.x = x - other.getX();
-		aux.y = y - other.getY();
-		aux.z = z - other.getZ();
+		aux.x = x - other.x;
+		aux.y = y - other.y;
+		aux.z = z - other.z;
 		return aux;
 	}
+	
 	void Normalize()
 	{
 		Vector3 aux = { x,y,z };
@@ -47,14 +44,16 @@ public:
 	{
 		return sqrt(x*x+y*y+z*z);
 	}
-	void operator *(int n)
+	Vector3D operator *(int n)
 	{
-		x = x * n;
-		y = y * n;
-		z = z * n;
+		Vector3D aux({ 0,0,0 });
+		aux.x = x * n;
+		aux.y = y * n;
+		aux.z = z * n;
+		return aux;
 	}int operator *(Vector3D other)
 	{
-		return x * other.getX() + y * other.getY() + other.getZ() * z;
+		return x * other.x + y * other.y + other.z * z;
 	}
 	void operator /(int n)
 	{
@@ -64,7 +63,7 @@ public:
 	}
 	bool operator==(Vector3D other)
 	{
-		return ((getX() == other.getX()) && (getY() == other.getY()) && (getZ() == other.getZ()));
+		return ((x == other.x) && (y == other.y) && (z == other.z));
 	}
 	bool operator!=(Vector3D other)
 	{
@@ -72,7 +71,7 @@ public:
 	}
 private:
 	
-	float x, y, z;
+	
 	
 };
 

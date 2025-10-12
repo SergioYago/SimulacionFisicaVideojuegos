@@ -9,7 +9,7 @@
 #include "callbacks.hpp"
 #include "Sphere.h"
 #include "Vector3D.h"
-#include "Particle.h"
+#include "Proyectile.h"
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -31,7 +31,7 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
-Particle* p;
+std::vector<std::unique_ptr< Proyectile>> proyectiles;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -56,14 +56,6 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	//Sphere* s = new Sphere(5, {1,1,1},{1,0,0,1});
-	/*
-	Vector3D* v = new Vector3D( { 15,15,15 });
-	Sphere* s = new Sphere(4,{0,0,0},{1,1,1,1});
-	Sphere* s2 = new Sphere(4,{v->getX(),0,0},{1,0,0,1});
-	Sphere* s3 = new Sphere(4,{0,v->getY(),0},{0,1,0,1});
-	Sphere* s4 = new Sphere(4,{0,0,v->getZ()},{0,0,1,1});*/
-	p = new Particle({ 0,0,0 }, { 4,0,0 },{0,1,0});
 	}
 
 
@@ -72,11 +64,20 @@ void initPhysics(bool interactive)
 // t: time passed since last call in milliseconds
 void stepPhysics(bool interactive, double t)
 {
-	
 	PX_UNUSED(interactive);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	p->integrate(t);
+	
+	for (auto& aux: proyectiles) 
+	{
+		if (aux->canDestroy(t)) { delete &aux; }
+		
+	}
+	
+	for (auto& aux: proyectiles) 
+	{
+		aux->integrate(t);
+	}
 }
 
 // Function to clean data
@@ -95,9 +96,40 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
-	delete p;
+	int aux = proyectiles.size();
+	for(int i=0;i<aux;i++)
+	{
+		proyectiles.pop_back();
 	}
-
+	}
+void shoot1()
+{
+	Vector3D pos = GetCamera()->getTransform().p;
+	Vector3D dir = GetCamera()->getDir();
+	Vector3D accel({0,0,0});
+	pos += dir*3;
+	dir;
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 2,accel,10,9.81f,10));
+	
+}
+void shoot2()
+{
+	Vector3 pos = GetCamera()->getTransform().p;
+	Vector3 dir = GetCamera()->getDir();
+	Vector3 accel = { 0,0,0 };
+	pos += dir*3;
+	dir;
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 2, accel, 10, 9.81f, 10));
+}
+void shoot3()
+{
+	Vector3 pos = GetCamera()->getTransform().p;
+	Vector3 dir = GetCamera()->getDir();
+	Vector3 accel = { 0,0,0 };
+	pos += dir * 3;
+	dir;
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 2, accel, 10, 9.81f, 10));
+}
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
 {
@@ -112,6 +144,15 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 		break;
 	}
+	case'Q':
+		shoot1();
+		break;
+	case'E':
+		shoot2();
+		break;
+	case'R':
+		shoot3();
+		break;
 	default:
 		break;
 	}
