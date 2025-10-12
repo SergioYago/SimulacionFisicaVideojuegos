@@ -1,4 +1,4 @@
-#include <ctype.h>
+﻿#include <ctype.h>
 
 #include <PxPhysicsAPI.h>
 
@@ -67,11 +67,18 @@ void stepPhysics(bool interactive, double t)
 	PX_UNUSED(interactive);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	
-	for (auto& aux: proyectiles) 
+
+	for (int  i = 0; i < proyectiles.size(); i++)
 	{
-		if (aux->canDestroy(t)) { delete &aux; }
-		
+		if (proyectiles[i]->canDestroy(t))
+		{
+			proyectiles.erase(proyectiles.begin() + i);
+			
+		}
+		else
+		{
+			i++; 
+		}
 	}
 	
 	for (auto& aux: proyectiles) 
@@ -106,6 +113,7 @@ void shoot1()
 {
 	Vector3D pos = GetCamera()->getTransform().p;
 	Vector3D dir = GetCamera()->getDir();
+	dir.Normalize();
 	Vector3D accel({0,0,0});
 	pos += dir*3;
 	dir;
@@ -116,10 +124,10 @@ void shoot2()
 {
 	Vector3 pos = GetCamera()->getTransform().p;
 	Vector3 dir = GetCamera()->getDir();
-	Vector3 accel = { 0,0,0 };
+	Vector3 accel = { 10,0,0 };
 	pos += dir*3;
 	dir;
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 2, accel, 10, 9.81f, 10));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, Vector3D(1000,1,1), accel, 10, 9.81f, 10));
 }
 void shoot3()
 {

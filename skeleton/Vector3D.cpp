@@ -6,3 +6,7 @@ Vector3D::Vector3D(Vector3 v)
 	y = v.y;
 	z = v.z;
 }
+
+Vector3D::~Vector3D()
+{
+}

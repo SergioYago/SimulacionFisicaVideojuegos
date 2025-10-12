@@ -11,10 +11,11 @@ public:
 	~Particle();
 	virtual void integrate(double t);
 	Vector3D getVel() { return vel; }
-	void setVel(Vector3D v = Vector3D({ 0,0,0 })) { vel = v; }
+	void setVel(Vector3D v) 
+	{ vel = v; }
 	
 private:
-	Vector3D vel, accel;
+	Vector3D vel=Vector3D(), accel=Vector3D();
 	PxTransform pos;
 	RenderItem* item;
 	

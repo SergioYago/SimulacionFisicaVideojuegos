@@ -22,9 +22,9 @@ Particle::~Particle()
 void Particle::integrate(double t)
 {
 	
-	pos.p.x=vel.x*t;
-	pos.p.y=vel.y*t;
-	pos.p.z=vel.z*t;
+	pos.q.x=vel.x*t;
+	pos.q.y=vel.y*t;
+	pos.q.z=vel.z*t;
 	vel += accel * t;
 	vel =vel* pow(damping, t);
 	accel = accel* pow(damping, t);

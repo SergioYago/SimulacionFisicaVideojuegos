@@ -11,7 +11,7 @@ void Proyectile::integrate(double t)
 	
 	Particle::integrate(t);
 	Vector3D aux = getVel();
-	aux.y -= grav * mass * t;
+	aux.y -= grav  * t;
 	setVel(aux);
 }
 

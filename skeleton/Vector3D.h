@@ -7,18 +7,22 @@ using namespace physx;
 class Vector3D: public RenderItem
 {
 public:
+	float x, y, z;
+	Vector3D() { x = 0.f, y = 0.f, z = 0.f; }
 	Vector3D(Vector3 v);
 	
+	Vector3D(float X, float Y, float Z) :x(X), y(Y), z(Z) {};
 	~Vector3D();
-	float x, y, z;
-	void operator=(Vector3D other)
-	{
-		x = other.x;
+	
+	void  operator =(Vector3D other)
+	{		
+		x= other.x;
 		y = other.y;
 		z = other.z;
 	};
 	void operator +=(Vector3D other)
 	{
+		
 		x = x + other.x;
 		y = y + other.y;
 		z = z + other.z;
@@ -26,9 +30,9 @@ public:
 	Vector3D operator +(Vector3D other)
 	{
 		Vector3D aux({0,0,0});
-		aux.x = x - other.x;
-		aux.y = y - other.y;
-		aux.z = z - other.z;
+		aux.x = x + other.x;
+		aux.y = y + other.y;
+		aux.z = z + other.z;
 		return aux;
 	}
 	
@@ -40,11 +44,11 @@ public:
 		y = aux.y;
 		z = aux.z;
 	}
-	int Modulo()
+	double Modulo()
 	{
 		return sqrt(x*x+y*y+z*z);
 	}
-	Vector3D operator *(int n)
+	Vector3D operator *(float n)
 	{
 		Vector3D aux({ 0,0,0 });
 		aux.x = x * n;
@@ -55,7 +59,7 @@ public:
 	{
 		return x * other.x + y * other.y + other.z * z;
 	}
-	void operator /(int n)
+	void operator /(float n)
 	{
 		x = x / n;
 		y = y / n;
