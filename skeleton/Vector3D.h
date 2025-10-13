@@ -1,81 +1,85 @@
 #pragma once
-#include <PxPhysicsAPI.h>
-#include "RenderUtils.hpp"
-class Sphere;
-using namespace physx;
+#include <iostream>
+#include <cmath>
 
-class Vector3D: public RenderItem
-{
+class Vector3D {
 public:
-	float x, y, z;
-	Vector3D() { x = 0.f, y = 0.f, z = 0.f; }
-	Vector3D(Vector3 v);
-	
-	Vector3D(float X, float Y, float Z) :x(X), y(Y), z(Z) {};
-	~Vector3D();
-	
-	void  operator =(Vector3D other)
-	{		
-		x= other.x;
-		y = other.y;
-		z = other.z;
-	};
-	void operator +=(Vector3D other)
-	{
-		
-		x = x + other.x;
-		y = y + other.y;
-		z = z + other.z;
-	}
-	Vector3D operator +(Vector3D other)
-	{
-		Vector3D aux({0,0,0});
-		aux.x = x + other.x;
-		aux.y = y + other.y;
-		aux.z = z + other.z;
-		return aux;
-	}
-	
-	void Normalize()
-	{
-		Vector3 aux = { x,y,z };
-		aux.normalize();
-		x = aux.x;
-		y = aux.y;
-		z = aux.z;
-	}
-	double Modulo()
-	{
-		return sqrt(x*x+y*y+z*z);
-	}
-	Vector3D operator *(float n)
-	{
-		Vector3D aux({ 0,0,0 });
-		aux.x = x * n;
-		aux.y = y * n;
-		aux.z = z * n;
-		return aux;
-	}int operator *(Vector3D other)
-	{
-		return x * other.x + y * other.y + other.z * z;
-	}
-	void operator /(float n)
-	{
-		x = x / n;
-		y = y / n;
-		z = z / n;
-	}
-	bool operator==(Vector3D other)
-	{
-		return ((x == other.x) && (y == other.y) && (z == other.z));
-	}
-	bool operator!=(Vector3D other)
-	{
-		return !(*this == other);
-	}
-private:
-	
-	
-	
+    double x, y, z;
+
+    // Constructor vacío
+    Vector3D() : x(0.0), y(0.0), z(0.0) {}
+
+    // Constructor con 3 valores
+    Vector3D(double x_, double y_, double z_) : x(x_), y(y_), z(z_) {}
+    ~Vector3D() {}
+    // --- Operaciones aritméticas ---
+    // Suma de vectores
+    Vector3D operator+(const Vector3D& v) const {
+        return Vector3D(x + v.x, y + v.y, z + v.z);
+    }
+
+    // Resta de vectores
+    Vector3D operator-(const Vector3D& v) const {
+        return Vector3D(x - v.x, y - v.y, z - v.z);
+    }
+
+    
+    Vector3D operator*(double d) const {
+        return Vector3D(x * d, y * d, z * d);
+    }
+
+    
+    Vector3D operator/(double d) const {
+        return Vector3D(x / d, y / d, z / d);
+    }
+
+    
+    double Pescalar(const Vector3D& v) const {
+        return x * v.x + y * v.y + z * v.z;
+    }
+
+    
+    Vector3D Pvectorial(const Vector3D& v) const {
+        return Vector3D(
+            y * v.z - z * v.y,
+            z * v.x - x * v.z,
+            x * v.y - y * v.x
+        );
+    }
+
+    // Normal (longitud del vector)
+    double norm() const {
+        return std::sqrt(x * x + y * y + z * z);
+    }
+
+    // Normalización
+    Vector3D normalized() const {
+        double n = norm();
+        if (n == 0) return Vector3D(0, 0, 0);
+        return (*this) / n;
+    }
+
+    // Operador +=
+    Vector3D& operator+=(const Vector3D& v) {
+        x += v.x; y += v.y; z += v.z;
+        return *this;
+    }
+
+    // Operador -=
+    Vector3D& operator-=(const Vector3D& v) {
+        x -= v.x; y -= v.y; z -= v.z;
+        return *this;
+    }
+    // Comparación de igualdad
+    bool operator==(const Vector3D& v) const {
+        return x == v.x && y == v.y && z == v.z;
+    }
+
+    // Comparación de desigualdad
+    bool operator!=(const Vector3D& v) const {
+        return !(*this == v);
+    }
+
+
 };
 

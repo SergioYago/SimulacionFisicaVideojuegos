@@ -111,32 +111,42 @@ void cleanupPhysics(bool interactive)
 	}
 void shoot1()
 {
-	Vector3D pos = GetCamera()->getTransform().p;
-	Vector3D dir = GetCamera()->getDir();
-	dir.Normalize();
+	Vector3 aux= GetCamera()->getTransform().p;
+	Vector3D pos = Vector3D(aux.x, aux.y, aux.z);
+	aux= GetCamera()->getDir();
+	Vector3D dir = Vector3D(aux.x, aux.y, aux.z);
+	dir.normalized();
 	Vector3D accel({0,0,0});
+	//gs = gr(vs^2/vr^2)
+	float gr = 9.81f * ((2.f * 2.f) / (50.f*50.f));
 	pos += dir*3;
-	dir;
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 2,accel,10,9.81f,10));
+
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 2,accel,10,gr,10));
 	
 }
 void shoot2()
 {
-	Vector3 pos = GetCamera()->getTransform().p;
-	Vector3 dir = GetCamera()->getDir();
-	Vector3 accel = { 10,0,0 };
+	Vector3 aux = GetCamera()->getTransform().p;
+	Vector3D pos = Vector3D(aux.x, aux.y, aux.z);
+	aux = GetCamera()->getDir();
+	Vector3D dir = Vector3D(aux.x, aux.y, aux.z);
+	dir.normalized();
+	Vector3D accel = { 0,0,0 };
 	pos += dir*3;
-	dir;
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, Vector3D(1000,1,1), accel, 10, 9.81f, 10));
+
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir*10, accel, 10, 9.81f, 10));
 }
 void shoot3()
 {
-	Vector3 pos = GetCamera()->getTransform().p;
-	Vector3 dir = GetCamera()->getDir();
-	Vector3 accel = { 0,0,0 };
+	Vector3 aux = GetCamera()->getTransform().p;
+	Vector3D pos = Vector3D(aux.x, aux.y, aux.z);
+	aux = GetCamera()->getDir();
+	Vector3D dir = Vector3D(aux.x, aux.y, aux.z);
+	dir.normalized();
+	Vector3D accel = { 0,0,0 };
 	pos += dir * 3;
-	dir;
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 2, accel, 10, 9.81f, 10));
+	float gr = 9.81f * ((20.f * 20.f) / (25.f * 25.f));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 20, accel, 10, 9.81f, 10));
 }
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)

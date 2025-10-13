@@ -11,7 +11,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Proyectile.cpp" />
   </ItemGroup>
