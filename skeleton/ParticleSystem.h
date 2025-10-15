@@ -5,7 +5,7 @@ using namespace std;
 class ParticleSystem
 {
 public:
-	ParticleSystem(int n,Vector3D pRange={0,0,0}, Vector3D IniPos={0,0,0},Vector3D dRange={0,0,0},Vector3D IniDir);
+	ParticleSystem(int n,Vector3D pRange, Vector3D IniPos,Vector3D dRange,Vector3D IniDir,float initime,float timeRange);
 	~ParticleSystem();
 	void update(double t);
 private:
@@ -20,7 +20,7 @@ private:
 	//Numero de particulas actual y el numero maximo de particulas
 	int nParticles,maxParticles;
 	Vector3D iniPos, posRange, iniDir,dirRange;
-	int timeRange;
+	float timeRange, iniTime;
 	std::vector<std::unique_ptr< Particle>> proyectiles;
 	void integrate(double t);
 	Vector3D generateRandom(Vector3D ini,Vector3D range);

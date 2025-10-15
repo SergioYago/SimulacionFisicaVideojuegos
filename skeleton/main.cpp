@@ -10,6 +10,7 @@
 #include "Sphere.h"
 #include "Vector3D.h"
 #include "Proyectile.h"
+#include "ParticleSystem.h"
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -32,6 +33,7 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 std::vector<std::unique_ptr< Proyectile>> proyectiles;
+ParticleSystem* pSystem;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -56,6 +58,9 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+	Vector3 aux = GetCamera()->getDir();
+	Vector3D aux2 = Vector3D(aux.x, aux.y, aux.z);
+	pSystem =new ParticleSystem(10,Vector3D(0,0,0),Vector3D(0,0,0),Vector3D(0,0,0), aux2 ,10,0);
 	}
 
 
@@ -85,6 +90,7 @@ void stepPhysics(bool interactive, double t)
 	{
 		aux->integrate(t);
 	}
+	pSystem->update(t);
 }
 
 // Function to clean data
@@ -108,6 +114,7 @@ void cleanupPhysics(bool interactive)
 	{
 		proyectiles.pop_back();
 	}
+	delete pSystem;
 	}
 void shoot1()
 {

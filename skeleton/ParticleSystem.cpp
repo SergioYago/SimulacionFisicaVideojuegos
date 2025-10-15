@@ -4,7 +4,9 @@
 using namespace std;
 
 
-ParticleSystem::ParticleSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir)
+
+
+ParticleSystem::ParticleSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timerange)
 {
 	nParticles = 0;
 	maxParticles = n;
@@ -12,6 +14,8 @@ ParticleSystem::ParticleSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D
 	iniPos = IniPos;
 	dirRange = dRange;
 	iniDir = IniDir;
+	iniTime = initime;
+	timeRange = timerange;
 }
 
 ParticleSystem::~ParticleSystem()
@@ -19,18 +23,16 @@ ParticleSystem::~ParticleSystem()
 }
 Vector3D ParticleSystem::generateRandom(Vector3D ini, Vector3D range)
 {
-	Vector3D sol = { 0,0,0 };
-	int aux1 = ini.x - (range.x / 2);
-	int aux2 = ini.x + (range.x / 2);
-	sol.x = aux1 + static_cast<float> (rand() / (static_cast<float>(RAND_MAX / aux2)));
-	int aux1 = ini.y - (range.y / 2);
-	int aux2 = ini.y + (range.y / 2);
-	sol.y = aux1 + static_cast<float> (rand() / (static_cast<float>(RAND_MAX / aux2)));
-	int aux1 = ini.z - (range.z / 2);
-	int aux2 = ini.z + (range.z / 2);
-	sol.z = aux1 + static_cast<float> (rand() / (static_cast<float>(RAND_MAX / aux2)));
+	//tiene que hacerse por floats en vez de por vector
+	std::default_random_engine gen;
+	std::normal_distribution<float> distx(ini.x, range.x);
+	std::normal_distribution<float> disty(ini.y, range.y);
+	std::normal_distribution<float> distz(ini.z, range.z);
+	Vector3D sol;
+	sol.x = distx(gen);
+	sol.y = disty(gen);
+	sol.z = distz(gen);
 	return sol;
-//	std::normal_distribution
 }
 
 void ParticleSystem::createParticle()
@@ -38,26 +40,15 @@ void ParticleSystem::createParticle()
 //mirar los rangos de posicion y pillar un random entre la inipos-posRange/2 y 
 //inipos +posRange/2+1
 	Vector3D pos;
-	int aux1 = iniPos.x - (posRange.x / 2);
-	int aux2 = iniPos.x + (posRange.x / 2);
-	pos.x = rand() % aux1 + aux2;
-	aux1 = iniPos.y - (posRange.y / 2);
-	aux2 = iniPos.y + (posRange.y / 2);
-	pos.y = rand() % aux1 + aux2;
-	aux1 = iniPos.z - (posRange.z / 2);
-	aux2 = iniPos.z + (posRange.z / 2);
-	pos.z = rand() % aux1 + aux2;
-	//ahora toca el tiempo de vida y la direccion
+	pos = generateRandom(iniPos, posRange);
 	Vector3D dir;
-	aux1 = iniDir.x - (dirRange.x / 2);
-	int aux2 = iniPos.x + (posRange.x / 2);
-	pos.x = rand() % aux1 + aux2;
-	aux1 = iniPos.y - (posRange.y / 2);
-	aux2 = iniPos.y + (posRange.y / 2);
-	pos.y = rand() % aux1 + aux2;
-	aux1 = iniPos.z - (posRange.z / 2);
-	aux2 = iniPos.z + (posRange.z / 2);
-	pos.z = rand() % aux1 + aux2;
+	dir = generateRandom(iniDir, dirRange);
+	
+	std::default_random_engine gen;
+	std::normal_distribution<float> dist(iniTime,timeRange);
+	float lifetime = dist(gen);
+	Vector3D accel = { 0,0,0 };
+	proyectiles.push_back(std::make_unique<Particle>(pos, dir, accel, 0, 10));
 }
 void ParticleSystem::update(double t)
 {
