@@ -116,12 +116,13 @@ void shoot1()
 	aux= GetCamera()->getDir();
 	Vector3D dir = Vector3D(aux.x, aux.y, aux.z);
 	dir.normalized();
-	Vector3D accel({0,0,0});
+	
 	//gs = gr(vs^2/vr^2)
-	float gr = 9.81f * ((2.f * 2.f) / (50.f*50.f));
+	float gr = 9.81f * ((2.f * 2.f) / (25.f*25.f));
+	Vector3D accel({ 0,gr,0 });
 	pos += dir*3;
 
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 2,accel,10,gr,10));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 2,accel,10,0,10));
 	
 }
 void shoot2()
@@ -133,8 +134,8 @@ void shoot2()
 	dir.normalized();
 	Vector3D accel = { 0,0,0 };
 	pos += dir*3;
-
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir*10, accel, 10, 9.81f, 10));
+	float gr = 9.81f * ((10.f * 10.f) / (25.f * 25.f));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir*10, accel, 10, gr, 10));
 }
 void shoot3()
 {
