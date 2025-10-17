@@ -60,7 +60,7 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 	Vector3 aux = GetCamera()->getDir();
 	Vector3D aux2 = Vector3D(aux.x, aux.y, aux.z);
-	pSystem =new ParticleSystem(100,Vector3D(10,0,0),Vector3D(0,0, 0), Vector3D(0, 0, 0), Vector3D(-1.f, 1.0f, 0), 1, 1,1);
+	pSystem =new ParticleSystem(100,Vector3D(10,0,0),Vector3D(0,0, 0), Vector3D(0, 0, 0), Vector3D(-1.f, 2.0f, 0), 1, 1,1);
 
 	}
 

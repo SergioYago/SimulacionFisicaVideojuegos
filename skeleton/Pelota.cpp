@@ -1,5 +1,5 @@
 #include "Pelota.h"
-Pelota::Pelota(Vector3D posfinal, ParticleSystem* System, Vector3D pos, Vector3D dir, Vector3D accel, float grav, float lifetime) :Particle(pos, dir, acce, grav, lifetime)
+Pelota::Pelota(Vector3D posfinal, PelotaSystem* System, Vector3D pos, Vector3D dir, Vector3D accel, float grav, float lifetime) :Particle(pos, dir, accel, grav, lifetime)
 {
 	posFinal = posfinal;
 	system = System;
@@ -17,6 +17,6 @@ void Pelota::integrate(double t)
 	//como compruebo esto?
 	if(aux.x<posFinal.x||aux.y>posFinal.y||aux.z>posFinal.z)
 	{
-	//generar partículas
+		system->Activate();
 	}
 }
