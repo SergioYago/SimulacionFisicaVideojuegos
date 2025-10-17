@@ -9,16 +9,21 @@ class ParticleSystem
 public:
 	ParticleSystem(int n,Vector3D pRange, Vector3D IniPos,Vector3D dRange,Vector3D IniDir,float initime,float timeRange, float yPendiente=0.f);
 	~ParticleSystem();
-	void update(double t);
+	virtual void update(double t);
+	void updatePos(Vector3D newPos) { iniPos = newPos; }
+protected:
+	std::vector<std::unique_ptr< Particle>> particles;
+	int nParticles, maxParticles;
+	void integrate(double t);
+	void createParticle();
 private:
 	
-	int nParticles,maxParticles;
+	
 	Vector3D iniPos, posRange, iniDir,dirRange;
 	float timeRange, iniTime;
-	std::vector<std::unique_ptr< Particle>> particles;
-	void integrate(double t);
+
 	Vector3D generateRandom(Vector3D ini,Vector3D range);
-	void createParticle();
+	
 	static std::default_random_engine gen;
 	float yPendiente;
 };

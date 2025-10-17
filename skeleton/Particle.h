@@ -11,6 +11,7 @@ public:
 	~Particle();
 	virtual void integrate(double t);
 	Vector3D getVel() { return vel; }
+	Vector3D getPos() { return Vector3D(pos.p.x, pos.p.y, pos.p.z); }
 	void setVel(Vector3D v) { vel = v; }
 	bool canDestroy(double t);
 private:
