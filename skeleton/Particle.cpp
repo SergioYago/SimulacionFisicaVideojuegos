@@ -18,7 +18,8 @@ Particle::Particle(Vector3D Pos, Vector3D Vel, Vector3D Accel, float Grav, float
 
 Particle::~Particle()
 {
-	DeregisterRenderItem(item);
+	item->release();
+	//DeregisterRenderItem(item);
 	item = nullptr;
 }
 
