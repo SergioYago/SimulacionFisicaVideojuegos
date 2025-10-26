@@ -7,7 +7,7 @@ using namespace std;
 class ParticleSystem
 {
 public:
-	ParticleSystem(int n,Vector3D pRange, Vector3D IniPos,Vector3D dRange,Vector3D IniDir,float initime,float timeRange, float yPendiente=0.f);
+	ParticleSystem(int n,Vector3D pRange, Vector3D IniPos,Vector3D dRange,Vector3D IniDir,float initime,float timeRange, float yPendiente=0.f,float grav=0.f);
 	~ParticleSystem();
 	virtual void update(double t);
 	void updatePos(Vector3D newPos) { iniPos = newPos; }
@@ -21,7 +21,7 @@ private:
 	
 	Vector3D iniPos, posRange, iniDir,dirRange;
 	float timeRange, iniTime;
-
+	float grav;
 	Vector3D generateRandom(Vector3D ini,Vector3D range);
 	
 	static std::default_random_engine gen;

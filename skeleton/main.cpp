@@ -11,6 +11,8 @@
 #include "Vector3D.h"
 #include "Proyectile.h"
 #include "ParticleSystem.h"
+#include "Pelota.h"
+#include "PelotaSystem.h"
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -33,7 +35,8 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 std::vector<std::unique_ptr< Proyectile>> proyectiles;
-ParticleSystem* pSystem;
+//ParticleSystem* pSystem;
+PelotaSystem* pelotaSystem;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -60,8 +63,7 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 	Vector3 aux = GetCamera()->getDir();
 	Vector3D aux2 = Vector3D(aux.x, aux.y, aux.z);
-	pSystem =new ParticleSystem(100,Vector3D(10,0,0),Vector3D(0,0, 0), Vector3D(0, 0, 0), Vector3D(-1.f, 2.0f, 0), 1, 1,1);
-
+	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 1, 1, 0,15.f);
 	}
 
 
@@ -91,7 +93,8 @@ void stepPhysics(bool interactive, double t)
 	{
 		aux->integrate(t);
 	}
-	pSystem->update(t);
+	//pSystem->update(t);
+	pelotaSystem->update(t);
 }
 
 // Function to clean data
@@ -115,7 +118,7 @@ void cleanupPhysics(bool interactive)
 	{
 		proyectiles.pop_back();
 	}
-	delete pSystem;
+	delete pelotaSystem;
 	}
 void shoot1()
 {
@@ -178,7 +181,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		shoot2();
 		break;
 	case'R':
-		shoot3();
+		pelotaSystem->Activate();
 		break;
 	default:
 		break;
