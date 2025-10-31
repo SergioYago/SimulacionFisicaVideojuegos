@@ -16,6 +16,8 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Pelota.cpp" />
     <ClCompile Include="PelotaSystem.cpp" />
+    <ClCompile Include="GeneradorFuerza.cpp" />
+    <ClCompile Include="GravityGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -34,6 +36,8 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Pelota.h" />
     <ClInclude Include="PelotaSystem.h" />
+    <ClInclude Include="GeneradorFuerza.h" />
+    <ClInclude Include="GravityGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -11,6 +11,7 @@
 #include "Vector3D.h"
 #include "Proyectile.h"
 #include "ParticleSystem.h"
+#include "GravityGenerator.h"
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -34,6 +35,7 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 std::vector<std::unique_ptr< Proyectile>> proyectiles;
 ParticleSystem* pSystem;
+GravityGenerator gravityGen;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -89,6 +91,7 @@ void stepPhysics(bool interactive, double t)
 	
 	for (auto& aux: proyectiles) 
 	{
+		aux->AddForce(gravityGen.getForce(aux.get()));
 		aux->integrate(t);
 	}
 	pSystem->update(t);
@@ -127,10 +130,10 @@ void shoot1()
 	
 	//gs = gr(vs^2/vr^2)
 	float gr = 9.81f * ((2.f * 2.f) / (25.f*25.f));
-	Vector3D accel({ 0,gr,0 });
+	
 	pos += dir*3;
 
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 2,accel,10,0,10));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5,20, 10));
 	
 }
 void shoot2()
@@ -143,7 +146,7 @@ void shoot2()
 	Vector3D accel = { 0,0,0 };
 	pos += dir*3;
 	float gr = 9.81f * ((10.f * 10.f) / (25.f * 25.f));
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir*10, accel, 10, gr, 10));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5, 10, 10));
 }
 void shoot3()
 {
@@ -152,10 +155,9 @@ void shoot3()
 	aux = GetCamera()->getDir();
 	Vector3D dir = Vector3D(aux.x, aux.y, aux.z);
 	dir.normalized();
-	Vector3D accel = { 0,0,0 };
 	pos += dir * 3;
 	float gr = 9.81f * ((20.f * 20.f) / (25.f * 25.f));
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 20, accel, 10, 9.81f, 10));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5 ,10, 10));
 }
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
@@ -179,6 +181,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case'R':
 		shoot3();
+		break;
+	case'F':
+		gravityGen.setActive(!gravityGen.isActive());
+		break;
+	case'G':
+		gravityGen.changeGrav();
 		break;
 	default:
 		break;

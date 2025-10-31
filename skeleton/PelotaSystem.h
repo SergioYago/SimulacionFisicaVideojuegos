@@ -7,5 +7,6 @@ public:
 	void update(double t) override;
 	~PelotaSystem();
 	void Activate();
+	void addOffsetPos(Vector3D offset);
 };
 

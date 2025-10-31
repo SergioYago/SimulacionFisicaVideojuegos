@@ -18,6 +18,7 @@ ParticleSystem::ParticleSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D
 	iniTime = initime;
 	timeRange = timerange;
 	yPendiente = ypendiente;
+	dist = std::normal_distribution<float>(0, 1);
 }
 
 ParticleSystem::~ParticleSystem()
@@ -27,7 +28,7 @@ Vector3D ParticleSystem::generateRandom(Vector3D ini, Vector3D range)
 {
 	//tiene que hacerse por floats en vez de por vector
 	Vector3D sol;
-	std::normal_distribution<float> dist(0, 1);
+	
 	sol.x = dist(gen)*range.x+ini.x;
 	if (yPendiente != 0) { sol.y = sol.x * yPendiente+ini.y; }
 	else {
@@ -46,10 +47,9 @@ void ParticleSystem::createParticle()
 	Vector3D dir;
 	dir = generateRandom(iniDir, dirRange);
 	float lifetime;
-	std::normal_distribution<float> dist(0,1);
 	lifetime = iniTime + dist(gen) * timeRange;
 	Vector3D accel = { 0,0,0 };
-	particles.push_back(std::make_unique<Particle>(pos, dir, accel, 0, lifetime));
+	particles.push_back(std::make_unique<Particle>(pos, dir,2, lifetime));
 }
 void ParticleSystem::update(double t)
 {

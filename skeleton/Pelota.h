@@ -1,10 +1,10 @@
 #pragma once
-#include "Particle.h"
+#include "Proyectile.h"
 #include "PelotaSystem.h"
-class Pelota: public Particle
+class Pelota: public Proyectile
 {
 public:
-	Pelota(Vector3D posfinal,PelotaSystem* System,Vector3D pos, Vector3D dir, Vector3D accel, float grav,float lifetime);
+	Pelota(Vector3D posfinal,PelotaSystem* System,Vector3D pos, Vector3D dir,float mass,float lifetime);
 	~Pelota();
 	virtual void integrate(double t) override;
 private:

@@ -32,3 +32,9 @@ void PelotaSystem::Activate()
 		createParticle();
 	}
 }
+
+void PelotaSystem::addOffsetPos(Vector3D offset)
+{
+	updatePos(getPos() + offset);
+}
+

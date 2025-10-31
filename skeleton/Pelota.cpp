@@ -1,5 +1,7 @@
 #include "Pelota.h"
-Pelota::Pelota(Vector3D posfinal, PelotaSystem* System, Vector3D pos, Vector3D dir, Vector3D accel, float grav, float lifetime) :Particle(pos, dir, accel, grav, lifetime)
+
+
+Pelota::Pelota(Vector3D posfinal, PelotaSystem* System, Vector3D pos, Vector3D dir, float mass, float lifetime): Proyectile(pos,dir,mass,lifetime)
 {
 	posFinal = posfinal;
 	system = System;
@@ -17,6 +19,7 @@ void Pelota::integrate(double t)
 	//como compruebo esto?
 	if(aux.x<posFinal.x||aux.y>posFinal.y||aux.z>posFinal.z)
 	{
+		system->updatePos(getPos());
 		system->Activate();
 	}
 }
