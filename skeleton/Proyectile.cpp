@@ -1,7 +1,7 @@
 #include "Proyectile.h"
 
 
-Proyectile::Proyectile(Vector3D pos, Vector3D vel, float Mass, float Lifetime): Particle(pos,vel,Mass,Lifetime)
+Proyectile::Proyectile(Vector3D pos, Vector3D vel, float Mass, float Lifetime,float size): Particle(pos,vel,Mass,Lifetime,size)
 {
 }
 

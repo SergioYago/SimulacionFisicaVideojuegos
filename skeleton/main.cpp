@@ -41,6 +41,7 @@ ParticleSystem* pSystem;
 GravityGenerator gravityGen;
 //ParticleSystem* pSystem;
 PelotaSystem* pelotaSystem;
+Pelota* pelota;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -68,6 +69,7 @@ void initPhysics(bool interactive)
 	Vector3 aux = GetCamera()->getDir();
 	Vector3D aux2 = Vector3D(aux.x, aux.y, aux.z);
 	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 1, 1, 0,15.f);
+	pelota =new Pelota({ 10,0,0 }, pelotaSystem, { 0,0,0 }, { 0,0,0 }, 20, 99999999,5);
 	}
 
 
@@ -179,13 +181,15 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	}
 	case'Q':
-		shoot1();
+		//shoot1();
+		pelota->changeSystem(2);
 		break;
 	case'E':
-		shoot2();
+		//shoot2();
+		pelota->changeSystem(1);
 		break;
 	case'R':
-		pelotaSystem->Activate();
+		pelota->changeSystem(0);
 		break;
 	case'F':
 		gravityGen.setActive(!gravityGen.isActive());

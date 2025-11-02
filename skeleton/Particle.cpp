@@ -6,14 +6,15 @@
 
 
 
-Particle::Particle(Vector3D PosD, Vector3D Vel,float Mass, float Lifetime)
+Particle::Particle(Vector3D PosD, Vector3D Vel,float Mass, float Lifetime,float size)
 {
 	pos.p = { (float)PosD.x,(float)PosD.y,(float)PosD.z };
 	pos.q = { 0,0,0,0 };
 	vel = Vel;
-	item = new RenderItem(CreateShape(PxSphereGeometry(1)), &pos, { 1,1,1,1 });
+	item = new RenderItem(CreateShape(PxSphereGeometry(size)), &pos, { 1,1,1,1 });
 	mass = Mass;
 	lifetime = Lifetime;
+	
 }
 
 Particle::~Particle()

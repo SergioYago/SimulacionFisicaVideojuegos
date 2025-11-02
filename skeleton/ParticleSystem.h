@@ -8,11 +8,13 @@ using namespace std;
 class ParticleSystem
 {
 public:
-	ParticleSystem(int n,Vector3D pRange, Vector3D IniPos,Vector3D dRange,Vector3D IniDir,float initime,float timeRange, float yPendiente=0.f,float grav=0.f);
+	ParticleSystem(int n,Vector3D pRange, Vector3D IniPos,Vector3D dRange,Vector3D IniDir,float initime,float timeRange, float yPendiente=0.f);
 	~ParticleSystem();
 	virtual void update(double t);
-	void updatePos(Vector3D newPos) { iniPos = newPos; }
-	void updateDir(Vector3D newDir) { iniDir = newDir; }
+	void updatePos(Vector3D newPos) { iniPos = newPos; };
+	void updateDir(Vector3D newDir) { iniDir = newDir; };
+	void updateposRange(Vector3D newRange) { posRange = newRange; };
+	void updatedirRange(Vector3D newRange) { dirRange = newRange; };
 	Vector3D getPos() { return iniPos; }
 protected:
 	std::vector<std::unique_ptr< Particle>> particles;

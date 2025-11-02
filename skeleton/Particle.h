@@ -7,7 +7,7 @@ constexpr float damping = 0.99999;
 class Particle
 {
 public:
-	Particle(Vector3D PosD, Vector3D Vel,float Mass, float Lifetime = 10.f);
+	Particle(Vector3D PosD, Vector3D Vel,float Mass, float Lifetime = 10.f,float size=1.f);
 	~Particle();
 	virtual void integrate(double t);
 	Vector3D getVel() { return vel; }
