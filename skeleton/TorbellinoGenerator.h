@@ -9,5 +9,6 @@ public:
 private:
 	Vector3D mPos;
 	float mRadio;
+	float k1 = 1.f;
 };
 

@@ -15,6 +15,7 @@
 #include "GeneradorViento.h"
 #include "Pelota.h"
 #include "PelotaSystem.h"
+#include "TorbellinoGenerator.h"
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -43,8 +44,9 @@ GravityGenerator* gravityGen;
 //ParticleSystem* pSystem;
 PelotaSystem* pelotaSystem;
 Pelota* pelota;
-
+TorbellinoGenerator* torbellino;
 GeneradorViento* windGen;
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -70,14 +72,12 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 	Vector3 aux = GetCamera()->getDir();
 	Vector3D aux2 = Vector3D(aux.x, aux.y, aux.z);
-	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 1, 1, 0,15.f);
+	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 1, 1, 0);
 	pelota =new Pelota({ 10,0,0 }, pelotaSystem, { 0,0,0 }, { 0,0,0 }, 20, 99999999,5);
-	}
-
-	
-	windGen = new GeneradorViento(Vector3D{1,0,0});
+	windGen = new GeneradorViento(Vector3D{0,1,0});
 	gravityGen = new GravityGenerator();
 	pelotaSystem->AddForce(gravityGen);
+	torbellino = new TorbellinoGenerator({ 0,0,0 }, 1, 1000);
 }
 
 
@@ -106,6 +106,7 @@ void stepPhysics(bool interactive, double t)
 	for (auto& aux: proyectiles) 
 	{
 		aux->AddForce(gravityGen->getForce(aux.get()));
+		aux->AddForce(torbellino->getForce(aux.get()));
 		//aux->AddForce(windGen->getForce(aux.get()));
 		aux->integrate(t);
 	}
@@ -198,7 +199,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		pelota->changeSystem(1);
 		break;
 	case'R':
-		pelota->changeSystem(0);
+		//pelota->changeSystem(0);
+		shoot3();
 		break;
 	case'F':
 		gravityGen->setActive(!gravityGen->isActive());
