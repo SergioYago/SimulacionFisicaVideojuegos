@@ -12,6 +12,7 @@
 #include "Proyectile.h"
 #include "ParticleSystem.h"
 #include "GravityGenerator.h"
+#include "GeneradorViento.h"
 #include "Pelota.h"
 #include "PelotaSystem.h"
 #include <iostream>
@@ -38,11 +39,12 @@ ContactReportCallback gContactReportCallback;
 std::vector<std::unique_ptr< Proyectile>> proyectiles;
 
 ParticleSystem* pSystem;
-GravityGenerator gravityGen;
+GravityGenerator* gravityGen;
 //ParticleSystem* pSystem;
 PelotaSystem* pelotaSystem;
 Pelota* pelota;
 
+GeneradorViento* windGen;
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -72,6 +74,12 @@ void initPhysics(bool interactive)
 	pelota =new Pelota({ 10,0,0 }, pelotaSystem, { 0,0,0 }, { 0,0,0 }, 20, 99999999,5);
 	}
 
+	
+	windGen = new GeneradorViento(Vector3D{1,0,0});
+	gravityGen = new GravityGenerator();
+	pelotaSystem->AddForce(gravityGen);
+}
+
 
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
@@ -97,7 +105,8 @@ void stepPhysics(bool interactive, double t)
 	
 	for (auto& aux: proyectiles) 
 	{
-		aux->AddForce(gravityGen.getForce(aux.get()));
+		aux->AddForce(gravityGen->getForce(aux.get()));
+		//aux->AddForce(windGen->getForce(aux.get()));
 		aux->integrate(t);
 	}
 	//pSystem->update(t);
@@ -192,10 +201,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		pelota->changeSystem(0);
 		break;
 	case'F':
-		gravityGen.setActive(!gravityGen.isActive());
+		gravityGen->setActive(!gravityGen->isActive());
 		break;
 	case'G':
-		gravityGen.changeGrav();
+		gravityGen->changeGrav();
 		break;
 	default:
 		break;

@@ -21,6 +21,7 @@ ParticleSystem::ParticleSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D
 	dist = std::normal_distribution<float>(0, 1);
 }
 
+
 ParticleSystem::~ParticleSystem()
 {
 }
@@ -78,10 +79,19 @@ void ParticleSystem::update(double t)
 	integrate(t);
 }
 
+void ParticleSystem::AddForce(GeneradorFuerza* force)
+{
+	fuerzas.push_back(force);
+}
+
 void ParticleSystem::integrate(double t)
 {
 	for (auto& aux : particles)
 	{
+		for(auto fuerza:fuerzas)
+		{
+			aux->AddForce(fuerza->getForce(aux.get()));
+		}
 		aux->integrate(t);
 	}
 }

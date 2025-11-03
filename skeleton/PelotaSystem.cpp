@@ -1,5 +1,6 @@
 #include "PelotaSystem.h"
-PelotaSystem::PelotaSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timeRange, float yPendiente,float grav):ParticleSystem(n, pRange,IniPos,dRange,IniDir,initime,timeRange,yPendiente)
+
+PelotaSystem::PelotaSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timeRange, float yPendiente):ParticleSystem(n, pRange,IniPos,dRange,IniDir,initime,timeRange,yPendiente)
 {
 
 }

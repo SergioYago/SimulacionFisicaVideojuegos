@@ -16,6 +16,7 @@ public:
 	void updateposRange(Vector3D newRange) { posRange = newRange; };
 	void updatedirRange(Vector3D newRange) { dirRange = newRange; };
 	Vector3D getPos() { return iniPos; }
+	void AddForce(GeneradorFuerza* force);
 protected:
 	std::vector<std::unique_ptr< Particle>> particles;
 	int nParticles, maxParticles;
