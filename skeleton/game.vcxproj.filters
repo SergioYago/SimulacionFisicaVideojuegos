@@ -18,11 +18,9 @@
     <ClCompile Include="PelotaSystem.cpp" />
     <ClCompile Include="GeneradorFuerza.cpp" />
     <ClCompile Include="GravityGenerator.cpp" />
-
     <ClCompile Include="TorbellinoGenerator.cpp" />
-
     <ClCompile Include="GeneradorViento.cpp" />
-
+    <ClCompile Include="ParticleGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -43,11 +41,9 @@
     <ClInclude Include="PelotaSystem.h" />
     <ClInclude Include="GeneradorFuerza.h" />
     <ClInclude Include="GravityGenerator.h" />
-
     <ClInclude Include="TorbellinoGenerator.h" />
-
     <ClInclude Include="GeneradorViento.h" />
-
+    <ClInclude Include="ParticleGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

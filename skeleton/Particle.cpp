@@ -12,7 +12,7 @@ Particle::Particle(Vector3D PosD, Vector3D Vel,float Mass, float Lifetime,float 
 	pos.q = { 0,0,0,0 };
 	vel = Vel;
 	item = new RenderItem(CreateShape(PxSphereGeometry(size)), &pos, { 1,1,1,1 });
-	mass = Mass;
+	mass = 1/Mass;
 	lifetime = Lifetime;
 	
 }

@@ -10,7 +10,7 @@
 #include "Sphere.h"
 #include "Vector3D.h"
 #include "Proyectile.h"
-#include "ParticleSystem.h"
+#include "ParticleGenerator.h"
 #include "GravityGenerator.h"
 #include "GeneradorViento.h"
 #include "Pelota.h"
@@ -39,7 +39,7 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 std::vector<std::unique_ptr< Proyectile>> proyectiles;
 
-ParticleSystem* pSystem;
+ParticleGenerator* pSystem;
 GravityGenerator* gravityGen;
 //ParticleSystem* pSystem;
 PelotaSystem* pelotaSystem;
@@ -73,7 +73,7 @@ void initPhysics(bool interactive)
 	Vector3 aux = GetCamera()->getDir();
 	Vector3D aux2 = Vector3D(aux.x, aux.y, aux.z);
 	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 1, 1, 0);
-	pelota =new Pelota({ 10,0,0 }, pelotaSystem, { 0,0,0 }, { 0,0,0 }, 20, 99999999,5);
+	pelota =new Pelota(Vector3D{ 10,0,0 }, pelotaSystem, { 0,0,0 }, { 0,0,0 }, 20, 99999999,5);
 	windGen = new GeneradorViento(Vector3D{0,1,0});
 	gravityGen = new GravityGenerator();
 	pelotaSystem->AddForce(gravityGen);
@@ -150,7 +150,7 @@ void shoot1()
 	
 	pos += dir*3;
 
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5,20, 10));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5,10, 10));
 	
 }
 void shoot2()

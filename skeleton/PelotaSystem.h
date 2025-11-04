@@ -1,6 +1,6 @@
 #pragma once
-#include "ParticleSystem.h"
-class PelotaSystem:public ParticleSystem
+#include "ParticleGenerator.h"
+class PelotaSystem:public ParticleGenerator
 {
 public:
 	PelotaSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timeRange, float yPendiente = 0.f);
