@@ -77,7 +77,8 @@ void initPhysics(bool interactive)
 	windGen = new GeneradorViento(Vector3D{0,1,0});
 	gravityGen = new GravityGenerator();
 	pelotaSystem->AddForce(gravityGen);
-	torbellino = new TorbellinoGenerator({ 0,0,0 }, 1, 1000);
+	torbellino = new TorbellinoGenerator({ 0,0,0 },1, 100);
+	pelotaSystem->AddForce(torbellino);
 }
 
 
@@ -199,8 +200,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		pelota->changeSystem(1);
 		break;
 	case'R':
-		//pelota->changeSystem(0);
-		shoot3();
+		pelota->changeSystem(0);
+		//shoot3();
 		break;
 	case'F':
 		gravityGen->setActive(!gravityGen->isActive());
