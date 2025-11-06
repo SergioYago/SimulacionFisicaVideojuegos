@@ -4,10 +4,21 @@
 #include "Vector3D.h"
 using namespace physx;
 constexpr float damping = 0.99999;
+struct stats
+{
+public:
+	stats() { mass = 1.f; size = 1.f; }
+	stats(float m,float s, Vector4 c)
+	{
+		mass = m; size = s; color = c;
+	}
+	float mass,size;
+	Vector4 color = { 1,1,1,1 };
+};
 class Particle
 {
 public:
-	Particle(Vector3D PosD, Vector3D Vel,float Mass, float Lifetime = 10.f,float size=1.f);
+	Particle(Vector3D PosD, Vector3D Vel,float Mass, float Lifetime = 10.f,float size=1.f, Vector4 color={1,1,1,1});
 	~Particle();
 	virtual void integrate(double t);
 	Vector3D getVel() { return vel; }

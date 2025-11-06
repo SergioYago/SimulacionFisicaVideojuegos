@@ -6,22 +6,22 @@
 
 
 
-Particle::Particle(Vector3D PosD, Vector3D Vel,float Mass, float Lifetime,float size)
+
+
+Particle::Particle(Vector3D PosD, Vector3D Vel, float Mass, float Lifetime, float size, Vector4 color)
 {
 	pos.p = { (float)PosD.x,(float)PosD.y,(float)PosD.z };
 	pos.q = { 0,0,0,0 };
 	vel = Vel;
-	item = new RenderItem(CreateShape(PxSphereGeometry(size)), &pos, { 1,1,1,1 });
-	mass = 1/Mass;
+	item = new RenderItem(CreateShape(PxSphereGeometry(size)), &pos, color);
+	mass = 1 / Mass;
 	lifetime = Lifetime;
-	
+
 }
 
 Particle::~Particle()
 {
-	item->release();
-	//DeregisterRenderItem(item);
-	item = nullptr;
+	item->release();	
 }
 
 void Particle::integrate(double t)

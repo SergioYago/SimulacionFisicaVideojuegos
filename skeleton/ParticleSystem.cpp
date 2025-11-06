@@ -15,6 +15,12 @@ ParticleSystem::ParticleSystem()
 
 ParticleSystem::~ParticleSystem()
 {
+	int aux = particles.size();
+	for (int i = 0; i < aux; i++)
+	{
+		particles.pop_back();
+	}
+	for (auto it : fuerzas) { delete it; }
 }
 
 

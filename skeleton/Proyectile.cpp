@@ -5,6 +5,10 @@ Proyectile::Proyectile(Vector3D pos, Vector3D vel, float Mass, float Lifetime,fl
 {
 }
 
+Proyectile::~Proyectile()
+{
+}
+
 void Proyectile::integrate(double t)
 {
 	

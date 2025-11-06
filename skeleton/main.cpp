@@ -16,6 +16,7 @@
 #include "Pelota.h"
 #include "PelotaSystem.h"
 #include "TorbellinoGenerator.h"
+#include "ExplosionGenerator.h"
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -46,7 +47,8 @@ PelotaSystem* pelotaSystem;
 Pelota* pelota;
 TorbellinoGenerator* torbellino;
 GeneradorViento* windGen;
-
+ParticleGenerator* generator;
+ExplosionGenerator* explosion;
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -70,12 +72,19 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 1, 0, 0);
+	stats particulaStat(10.f,1.f,{1,1,1,1});
+	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 0.75f, 0, 0, particulaStat);
 	pelota =new Pelota(Vector3D{ 0,0,0 }, pelotaSystem,{ 50,50,0 }, { 0,0,5 }, 20, 99999999,5);
-	windGen = new GeneradorViento(Vector3D{0,1,0});
+	windGen = new GeneradorViento(Vector3D{10,0,0});
+	windGen->setActive(false);
 	gravityGen = new GravityGenerator();
 	pelotaSystem->AddForce(gravityGen);
 	torbellino = new TorbellinoGenerator({ 0,0,0 },1, 100);
+	generator = new ParticleGenerator(100, { 0,0,0 }, { 0,0,0 }, { 3,0,3 }, { 0,20,0 }, 5, 2, 0, particulaStat);
+	explosion = new ExplosionGenerator({ 0,-5,0 }, 99999, 200, 2);
+	//generator->AddForce(torbellino);
+	generator->AddForce(explosion);
+	generator->AddForce(gravityGen);
 	
 }
 
@@ -88,7 +97,8 @@ void stepPhysics(bool interactive, double t)
 	PX_UNUSED(interactive);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-
+	generator->update(t);
+	pelotaSystem->update(t);
 	for (int  i = 0; i < proyectiles.size(); i++)
 	{
 		if (proyectiles[i]->canDestroy(t))
@@ -106,13 +116,13 @@ void stepPhysics(bool interactive, double t)
 	{
 		aux->AddForce(gravityGen->getForce(aux.get()));
 		//aux->AddForce(torbellino->getForce(aux.get()));
-		//aux->AddForce(windGen->getForce(aux.get()));
+		
 		aux->integrate(t);
 	}
-	pelota->integrate(t);
 	pelota->AddForce(gravityGen->getForce(pelota));
-	//pSystem->update(t);
-	pelotaSystem->update(t);
+	pelota->AddForce(windGen->getForce(pelota));
+	pelota->integrate(t);
+	explosion->update(t);
 }
 
 // Function to clean data
@@ -196,8 +206,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		//pelota->changeSystem(2);
 		break;
 	case'E':
-		//shoot2();
-		pelota->changeSystem(1);
+		explosion->Activate();
+		cout<<"hola"<<endl;
 		break;
 	case'R':
 		pelota->changeSystem(0);
@@ -207,7 +217,13 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		gravityGen->setActive(!gravityGen->isActive());
 		break;
 	case'G':
-		gravityGen->changeGrav();
+		torbellino->setActive(!torbellino->isActive());
+		break;
+	case'H':
+		windGen->setActive(!windGen->isActive());
+		break;
+	case'C':
+		windGen->setDir(windGen->getDir() * -1);
 		break;
 	default:
 		break;
