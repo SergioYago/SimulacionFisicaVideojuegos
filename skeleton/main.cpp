@@ -75,14 +75,14 @@ void initPhysics(bool interactive)
 	stats particulaStat(10.f,1.f,{1,1,1,1});
 	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 0.75f, 0, 0, particulaStat);
 	pelota =new Pelota(Vector3D{ 0,0,0 }, pelotaSystem,{ 50,50,0 }, { 0,0,5 }, 20, 99999999,5);
-	windGen = new GeneradorViento(Vector3D{10,0,0});
+	windGen = new GeneradorViento(Vector3D{50,0,0});
 	windGen->setActive(false);
 	gravityGen = new GravityGenerator();
 	pelotaSystem->AddForce(gravityGen);
-	torbellino = new TorbellinoGenerator({ 0,0,0 },1, 100);
-	generator = new ParticleGenerator(100, { 0,0,0 }, { 0,0,0 }, { 3,0,3 }, { 0,20,0 }, 5, 2, 0, particulaStat);
+	torbellino = new TorbellinoGenerator({ 0,0,0 },10, 200);
+	generator = new ParticleGenerator(250, { 0,0,0 }, { 0,0,0 }, { 3,0,3 }, { 0,20,0 }, 5, 2, 0, particulaStat);
 	explosion = new ExplosionGenerator({ 0,-5,0 }, 99999, 200, 2);
-	//generator->AddForce(torbellino);
+	generator->AddForce(torbellino);
 	generator->AddForce(explosion);
 	generator->AddForce(gravityGen);
 	
@@ -222,9 +222,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case'H':
 		windGen->setActive(!windGen->isActive());
 		break;
-	case'C':
-		windGen->setDir(windGen->getDir() * -1);
-		break;
+	case'C': {
+		int randomNum = rand() % 5;
+		randomNum++;
+		if (windGen->getDir().x >= 0) { windGen->setDir({ (float)-randomNum ,0,0 }); }
+		else { windGen->setDir({ (float)randomNum ,0,0 }); }
+		break; }
 	default:
 		break;
 	}
