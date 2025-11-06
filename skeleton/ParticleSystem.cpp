@@ -32,6 +32,7 @@ void ParticleSystem::integrate(double t)
 	{
 		for(auto fuerza:fuerzas)
 		{
+			
 			aux->AddForce(fuerza->getForce(aux.get()));
 		}
 		aux->integrate(t);
