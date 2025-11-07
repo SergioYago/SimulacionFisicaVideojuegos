@@ -3,11 +3,6 @@
 #include <fstream>
 
 
-
-
-
-
-
 Particle::Particle(Vector3D PosD, Vector3D Vel, float Mass, float Lifetime, float size, Vector4 color)
 {
 	pos.p = { (float)PosD.x,(float)PosD.y,(float)PosD.z };
@@ -45,6 +40,3 @@ void Particle::AddForce(Vector3D fuerza)
 {
 	accel += fuerza*mass;
 }
-
-
-

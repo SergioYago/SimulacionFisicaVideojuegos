@@ -209,10 +209,6 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		explosion->Activate();
 		cout<<"hola"<<endl;
 		break;
-	case'R':
-		pelota->changeSystem(0);
-		//shoot3();
-		break;
 	case'F':
 		gravityGen->setActive(!gravityGen->isActive());
 		break;
