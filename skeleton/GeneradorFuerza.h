@@ -17,10 +17,6 @@ protected:
 	Vector3D dir;
 	float fuerza;
 	bool active = true;
-	//viento:(Vv-Vp)*k1+|Vv-Vp|*(Vv-Vp)*k2. k1 y k2 cambian dependiendo de que tipo 
-	// de viento 
-	//en los torbellinos cambia dependiendo de la distancia a el 
-	// (mayor cuanto mas lejos) y con la altura, menor al subir.
-	//explosión se baja la fuerza con F=e^(t/tau) t =tiempo tau variable local
+	
 };
 
