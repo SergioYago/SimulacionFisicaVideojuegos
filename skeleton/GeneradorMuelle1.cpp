@@ -12,13 +12,11 @@ GeneradorMuelle1::~GeneradorMuelle1()
 
 Vector3D GeneradorMuelle1::getForce(Particle* aux)
 {
-	Vector3D sol;
-	sol = pos-aux->getPos();
-	double num=sol.norm();
-	if(num>=area)
-	{
-		sol = sol.normalized();
-		sol = sol * fuerza;
+	Vector3D dir,sol;
+	
+	dir =aux->getPos()-pos;
+	if (dir.x != 0 || dir.y != 0 || dir.z != 0) {
+		sol = (dir / dir.norm()) * (-fuerza) * (dir.norm() - area);
 	}
 	return sol;
 }

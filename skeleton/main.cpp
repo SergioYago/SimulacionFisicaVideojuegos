@@ -18,6 +18,7 @@
 #include "TorbellinoGenerator.h"
 #include "ExplosionGenerator.h"
 #include "GeneradorMuelle1.h"
+#include "GeneradorMuelle2.h"
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -50,7 +51,7 @@ TorbellinoGenerator* torbellino;
 GeneradorViento* windGen;
 ParticleGenerator* generator;
 ExplosionGenerator* explosion;
-GeneradorMuelle1* muelle1;
+GeneradorMuelle2* muelle1;
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -82,9 +83,9 @@ void initPhysics(bool interactive)
 	gravityGen = new GravityGenerator();
 	pelotaSystem->AddForce(gravityGen);
 	torbellino = new TorbellinoGenerator({ 0,0,0 },10, 200);
-	generator = new ParticleGenerator(250, { 0,0,0 }, { 0,0,0 }, { 3,0,3 }, { 0,20,0 }, 100,2, 0, particulaStat);
+	generator = new ParticleGenerator(1000, { 0,0,0 }, { 0,0,0 }, { 3,0,3 }, { 0,20,0 }, 5,2, 0, particulaStat);
 	explosion = new ExplosionGenerator({ 0,-5,0 }, 99999, 200, 2);
-	muelle1 = new GeneradorMuelle1({ 0,0,0 }, 300, 20);
+	muelle1 = new GeneradorMuelle2( 10,5,pelota);
 	//generator->AddForce(torbellino);
 	generator->AddForce(muelle1);
 	generator->AddForce(explosion);
@@ -211,7 +212,6 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case'E':
 		explosion->Activate();
-		cout<<"hola"<<endl;
 		break;
 	case'F':
 		gravityGen->setActive(!gravityGen->isActive());

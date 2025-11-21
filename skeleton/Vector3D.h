@@ -47,7 +47,7 @@ public:
         );
     }
 
-    // Normal (longitud del vector)
+    // Norma (longitud del vector)
     double norm() const {
         return std::sqrt(x * x + y * y + z * z);
     }
