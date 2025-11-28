@@ -1,19 +1,19 @@
 #pragma once
-#include "Particle.h"
+#include "ParticleP.h"
 #include "GeneradorFuerza.h"
 #include <vector>
 #include <random>
 #include <stdlib.h> 
 using namespace std;
-class ParticleSystem
+class ParticlePSystem
 {
 public:
-	ParticleSystem();
-	~ParticleSystem();
-	
+	ParticlePSystem();
+	~ParticlePSystem();
+
 	void AddForce(GeneradorFuerza* force);
 protected:
-	std::vector<std::unique_ptr<Particle>> particles;
+	std::vector<std::unique_ptr<ParticleP>> particles;
 	void integrate(double t);
 
 private:

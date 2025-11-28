@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector3D.h"
 #include "Particle.h"
+#include "ParticleP.h"
 class GeneradorFuerza
 {
 public:
@@ -11,6 +12,7 @@ public:
 	float getNumber() { return fuerza; }
 	void setNumber(float newForce) { fuerza = newForce; }
 	virtual Vector3D getForce(Particle* aux);
+	virtual Vector3D getForce(ParticleP* aux);
 	bool isActive(){ return active; }
 	void setActive(bool b) { active = b; }
 protected:

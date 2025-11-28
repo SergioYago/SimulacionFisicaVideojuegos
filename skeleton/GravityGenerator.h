@@ -6,6 +6,7 @@ public:
 	GravityGenerator();
 	~GravityGenerator();
 	Vector3D getForce(Particle* aux)override;
+	Vector3D getForce(ParticleP* aux)override;
 	void changeGrav() { first = !first; }
 private:
 	bool first = true;

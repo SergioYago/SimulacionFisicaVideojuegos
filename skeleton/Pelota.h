@@ -4,7 +4,7 @@
 class Pelota: public Proyectile
 {
 public:
-	Pelota(Vector3D posfinal,PelotaSystem* System,Vector3D pos, Vector3D dir,float mass,float lifetime,float size);
+	Pelota(Vector3D posfinal,PelotaSystem* System,Vector3D pos, Vector3D dir, PxScene* gScene,float mass,float lifetime,float size);
 	~Pelota();
 	virtual void integrate(double t) override;
 	void changeSystemRange(Vector3D range);

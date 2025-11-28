@@ -1,7 +1,7 @@
 #include "Pelota.h"
 
 
-Pelota::Pelota(Vector3D posfinal, PelotaSystem* System, Vector3D pos, Vector3D dir, float mass, float lifetime,float size): Proyectile(pos,dir,mass,lifetime,size)
+Pelota::Pelota(Vector3D posfinal, PelotaSystem* System, Vector3D pos, Vector3D dir, PxScene* gScene, float mass, float lifetime,float size): Proyectile(pos,dir,gScene,mass,lifetime,size)
 {
 	posFinal = posfinal;
 	system = System;

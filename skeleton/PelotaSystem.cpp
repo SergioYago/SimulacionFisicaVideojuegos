@@ -1,6 +1,6 @@
 #include "PelotaSystem.h"
 
-PelotaSystem::PelotaSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timeRange, float yPendiente, stats particulaB) :ParticleGenerator(n, pRange, IniPos, dRange, IniDir, initime, timeRange, yPendiente, particulaB)
+PelotaSystem::PelotaSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timeRange, float yPendiente, stats particulaB,PxScene* gScene) :ParticleGenerator(n, pRange, IniPos, dRange, IniDir, initime, timeRange, yPendiente, particulaB,gScene)
 {
 }
 void PelotaSystem::update(double t)

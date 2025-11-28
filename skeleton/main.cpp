@@ -76,21 +76,31 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 	stats particulaStat(10.f,1.f,{1,1,1,1});
-	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 0.75f, 0, 0, particulaStat);
-	pelota =new Pelota(Vector3D{ 0,0,0 }, pelotaSystem,{ 50,50,0 }, { 0,0,5 }, 20, 99999999,5);
+	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 0.75f, 0, 0, particulaStat,gScene);
+	pelota =new Pelota(Vector3D{ 0,0,0 }, pelotaSystem,{ 50,50,0 }, { 0,0,5 },gScene, 20, 99999999,5);
 	windGen = new GeneradorViento(Vector3D{50,0,0});
 	windGen->setActive(false);
 	gravityGen = new GravityGenerator();
 	pelotaSystem->AddForce(gravityGen);
 	torbellino = new TorbellinoGenerator({ 0,0,0 },10, 200);
-	generator = new ParticleGenerator(1000, { 0,0,0 }, { 0,0,0 }, { 3,0,3 }, { 0,20,0 }, 5,2, 0, particulaStat);
+	generator = new ParticleGenerator(15, { 0,0,0 }, { 0,0,0 }, { 3,0,3 }, { 0,20,0 }, 5,2, 0, particulaStat,gScene);
 	explosion = new ExplosionGenerator({ 0,-5,0 }, 99999, 200, 2);
 	muelle1 = new GeneradorMuelle2( 10,5,pelota);
 	//generator->AddForce(torbellino);
 	generator->AddForce(muelle1);
 	generator->AddForce(explosion);
 	generator->AddForce(gravityGen);
+	PxTransform tr;
+	tr.p = { 0,0,0 };
+	tr.q = PxQuat(PxIdentity);
+	PxMaterial* material = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+
+	PxShape* shape = CreateShape(PxBoxGeometry(100.0f, 0.5f, 100.0f),material);
+	PxRigidStatic* suelo=gPhysics->createRigidStatic(tr);
 	
+	suelo->attachShape(*shape);
+	gScene->addActor(*suelo);
+	RenderItem* item = new RenderItem(shape,suelo,{0.9f,0.9f,0.9f,1});
 }
 
 
@@ -166,7 +176,7 @@ void shoot1()
 	
 	pos += dir*3;
 
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5,10, 10));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5,gScene,10, 10));
 	
 }
 void shoot2()
@@ -179,7 +189,7 @@ void shoot2()
 	Vector3D accel = { 0,0,0 };
 	pos += dir*3;
 	float gr = 9.81f * ((10.f * 10.f) / (25.f * 25.f));
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5, 10, 10));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5,gScene, 10, 10));
 }
 void shoot3()
 {
@@ -190,7 +200,7 @@ void shoot3()
 	dir.normalized();
 	pos += dir * 3;
 	float gr = 9.81f * ((20.f * 20.f) / (25.f * 25.f));
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5 ,10, 10));
+	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5,gScene ,10, 10));
 }
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)

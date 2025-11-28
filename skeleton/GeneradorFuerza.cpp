@@ -20,6 +20,16 @@ Vector3D GeneradorFuerza::getForce(Particle* aux)
 	return sol;
 }
 
+Vector3D GeneradorFuerza::getForce(ParticleP* aux)
+{
+	Vector3D sol = { 0,0,0 };
+	if (active)
+	{
+		sol = dir * fuerza;
+	}
+	return sol;
+}
+
 
 
 

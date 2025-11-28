@@ -6,6 +6,7 @@ public:
 	GeneradorMuelle1(Vector3D pos,float Force,float Area);
 	~GeneradorMuelle1();
 	Vector3D getForce(Particle* aux)override;
+	Vector3D getForce(ParticleP* aux)override;
 private:
 	Vector3D pos;
 	float area;

@@ -3,7 +3,7 @@
 class PelotaSystem:public ParticleGenerator
 {
 public:
-	PelotaSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timeRange, float yPendiente, stats particulaB);
+	PelotaSystem(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timeRange, float yPendiente, stats particulaB,PxScene* gScene);
 	void update(double t) override;
 	~PelotaSystem();
 	void Activate();

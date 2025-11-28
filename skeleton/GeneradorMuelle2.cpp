@@ -22,3 +22,13 @@ Vector3D GeneradorMuelle2::getForce(Particle* aux)
 	}
 	return sol;
 }
+Vector3D GeneradorMuelle2::getForce(ParticleP* aux)
+{
+	Vector3D dir, sol;
+
+	dir = aux->getPos() - aux2->getPos();
+	if (dir.x != 0 || dir.y != 0 || dir.z != 0) {
+		sol = (dir / dir.norm()) * (-fuerza) * (dir.norm() - area);
+	}
+	return sol;
+}
