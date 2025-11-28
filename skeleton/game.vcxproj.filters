@@ -24,6 +24,10 @@
     <ClCompile Include="ExplosionGenerator.cpp" />
     <ClCompile Include="GeneradorMuelle1.cpp" />
     <ClCompile Include="GeneradorMuelle2.cpp" />
+    <ClCompile Include="ParticleP.cpp" />
+    <ClCompile Include="ProyectileP.cpp" />
+    <ClCompile Include="ParticlePGenerator.cpp" />
+    <ClCompile Include="ParticlePSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -50,6 +54,10 @@
     <ClInclude Include="ExplosionGenerator.h" />
     <ClInclude Include="GeneradorMuelle1.h" />
     <ClInclude Include="GeneradorMuelle2.h" />
+    <ClInclude Include="ParticleP.h" />
+    <ClInclude Include="ProyectileP.h" />
+    <ClInclude Include="ParticlePGenerator.h" />
+    <ClInclude Include="ParticlePSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
