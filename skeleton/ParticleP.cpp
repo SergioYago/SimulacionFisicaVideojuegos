@@ -11,7 +11,7 @@ ParticleP::ParticleP(Vector3D PosD, Vector3D Vel, PxScene* gScene, float Mass, f
 	pos.q = PxQuat(PxIdentity);
 	PxPhysics* gPhysics = &PxGetPhysics();
 	PxShape* shape = CreateShape(PxSphereGeometry(size));
-	PxRigidDynamic* bola = gPhysics->createRigidDynamic(pos);
+	bola = gPhysics->createRigidDynamic(pos);
 	bola->attachShape(*shape);
 	gScene->addActor(*bola);
 	vel = Vel;
@@ -31,8 +31,8 @@ void ParticleP::integrate(double t)
 	pos.p.x += vel.x * t;
 	pos.p.y += vel.y * t;
 	pos.p.z += vel.z * t;
-	vel += accel * t;
-	vel = vel * pow(damping, t);
+	
+	bola->addForce({(float)(accel.x*t),(float)(accel.y*t),(float)(accel.z*t)});
 	accel = { 0,0,0 };
 
 }

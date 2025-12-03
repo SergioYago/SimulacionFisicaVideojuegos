@@ -3,12 +3,11 @@
 #include "RenderUtils.hpp"
 #include "Vector3D.h"
 using namespace physx;
-constexpr float damping = 0.99999;
-struct stats
+struct stats2
 {
 public:
-	stats() { mass = 1.f; size = 1.f; }
-	stats(float m, float s, Vector4 c)
+	stats2() { mass = 1.f; size = 1.f; }
+	stats2(float m, float s, Vector4 c)
 	{
 		mass = m; size = s; color = c;
 	}
@@ -22,7 +21,7 @@ public:
 	~ParticleP();
 	virtual void integrate(double t);
 	Vector3D getVel() { return vel; }
-	Vector3D getPos() { return Vector3D(pos.p.x, pos.p.y, pos.p.z); }
+	Vector3D getPos() { auto aux = bola->getGlobalPose().p; return Vector3D(aux.x,aux.y,aux.z); }
 	float getMass() { return mass; }
 	void setVel(Vector3D v) { vel = v; }
 	bool canDestroy(double t);
@@ -32,5 +31,8 @@ private:
 	PxTransform pos;
 	RenderItem* item;
 	float lifetime, mass;
+	
+protected:
+	PxRigidDynamic* bola;
 };
 

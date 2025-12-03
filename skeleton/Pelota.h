@@ -1,7 +1,7 @@
 #pragma once
-#include "Proyectile.h"
+#include "ProyectileP.h"
 #include "PelotaSystem.h"
-class Pelota: public Proyectile
+class Pelota: public ProyectileP
 {
 public:
 	Pelota(Vector3D posfinal,PelotaSystem* System,Vector3D pos, Vector3D dir, PxScene* gScene,float mass,float lifetime,float size);
@@ -10,6 +10,7 @@ public:
 	void changeSystemRange(Vector3D range);
 	void changeSystemDir(Vector3D dir);
 	void changeSystem(int n);
+
 private:
 	Vector3D posFinal;
 	PelotaSystem* system;

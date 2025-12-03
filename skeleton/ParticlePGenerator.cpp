@@ -62,7 +62,7 @@ void ParticlePGenerator::createParticle()
 	float lifetime;
 	lifetime = iniTime + dist(gen) * timeRange;
 	Vector3D accel = { 0,0,0 };
-	particles.push_back(std::make_unique<Particle>(pos, dir,gScene,particulaB.mass, lifetime,particulaB.size,particulaB.color));
+	particles.push_back(std::make_unique<ParticleP>(pos, dir,gScene,particulaB.mass, lifetime,particulaB.size,particulaB.color));
 }
 
 Vector3D ParticlePGenerator::generateRandom(Vector3D ini, Vector3D range)

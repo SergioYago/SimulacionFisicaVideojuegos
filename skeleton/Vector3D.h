@@ -4,13 +4,14 @@
 
 class Vector3D {
 public:
-    double x, y, z;
+    float x, y, z;
 
     // Constructor vacío
-    Vector3D() : x(0.0), y(0.0), z(0.0) {}
+    Vector3D() : x(0.0f), y(0.0f), z(0.0f) {}
 
     // Constructor con 3 valores
-    Vector3D(double x_, double y_, double z_) : x(x_), y(y_), z(z_) {}
+    Vector3D(float x_, float y_,float z_) : x(x_), y(y_), z(z_) {}
+    
     ~Vector3D() {}
     // --- Operaciones aritméticas ---
     // Suma de vectores

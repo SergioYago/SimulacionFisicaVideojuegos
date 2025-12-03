@@ -1,24 +1,26 @@
 #include "Pelota.h"
 
 
-Pelota::Pelota(Vector3D posfinal, PelotaSystem* System, Vector3D pos, Vector3D dir, PxScene* gScene, float mass, float lifetime,float size): Proyectile(pos,dir,gScene,mass,lifetime,size)
+Pelota::Pelota(Vector3D posfinal, PelotaSystem* System, Vector3D pos, Vector3D dir, PxScene* gScene, float mass, float lifetime,float size): ProyectileP(pos,dir,gScene,mass,lifetime,size)
 {
 	posFinal = posfinal;
 	system = System;
 	msize = size;
+	bola->addForce({ 0,30,-50 }, PxForceMode::eIMPULSE);
 }
 
 Pelota::~Pelota()
 {
-	Particle::~Particle();
+	ParticleP::~ParticleP();
 }
 
 void Pelota::integrate(double t)
 {
-	Particle::integrate(t);
+	ParticleP::integrate(t);
 	Vector3D aux = getPos();
+	cout << aux.x << " " << aux.y << " " << aux.z << endl;
 	//como compruebo esto?
-	if(aux.z<posFinal.z)
+	/*if (aux.z<posFinal.z)
 	{
 		changeSystem(1);
 		Vector3D vel = getVel();
@@ -38,7 +40,8 @@ void Pelota::integrate(double t)
 		Vector3D vel = getVel();
 		vel.y = 15;
 		setVel(vel);
-	}
+	}*/
+	
 }
 
 void Pelota::changeSystemRange(Vector3D range)

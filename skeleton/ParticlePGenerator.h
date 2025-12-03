@@ -1,6 +1,6 @@
 #pragma once
-#include "ParticleSystem.h"
-class ParticlePGenerator : public ParticleSystem
+#include "ParticlePSystem.h"
+class ParticlePGenerator : public ParticlePSystem
 {
 public:
 	ParticlePGenerator(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timeRange, float yPendiente, stats ParticulaB, PxScene* gScene);
