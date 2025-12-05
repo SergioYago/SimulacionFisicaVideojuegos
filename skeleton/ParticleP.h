@@ -26,6 +26,7 @@ public:
 	void setVel(Vector3D v) { vel = v; }
 	bool canDestroy(double t);
 	void AddForce(Vector3D fuerza);
+	PxRigidDynamic* getActor() { return bola; }
 private:
 	Vector3D vel = Vector3D(), accel = Vector3D();
 	PxTransform pos;

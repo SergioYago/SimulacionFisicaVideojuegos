@@ -6,7 +6,7 @@ Pelota::Pelota(Vector3D posfinal, PelotaSystem* System, Vector3D pos, Vector3D d
 	posFinal = posfinal;
 	system = System;
 	msize = size;
-	bola->addForce({ 0,30,-50 }, PxForceMode::eIMPULSE);
+	bola->addForce({ 0,10,-50 }, PxForceMode::eIMPULSE);
 }
 
 Pelota::~Pelota()
@@ -18,29 +18,9 @@ void Pelota::integrate(double t)
 {
 	ParticleP::integrate(t);
 	Vector3D aux = getPos();
-	cout << aux.x << " " << aux.y << " " << aux.z << endl;
+	
 	//como compruebo esto?
-	/*if (aux.z<posFinal.z)
-	{
-		changeSystem(1);
-		Vector3D vel = getVel();
-		vel.z =vel.z*-1;
-		setVel(vel);
-	}
-	else if(aux.z > 30)
-	{
-		changeSystem(2);
-		Vector3D vel = getVel();
-		vel.z = vel.z * -1;
-		setVel(vel );
-	}
-	if(aux.y<=30)
-	{
-		changeSystem(0);
-		Vector3D vel = getVel();
-		vel.y = 15;
-		setVel(vel);
-	}*/
+	
 	
 }
 

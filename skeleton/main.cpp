@@ -52,6 +52,10 @@ GeneradorViento* windGen;
 ParticleGenerator* generator;
 ExplosionGenerator* explosion;
 GeneradorMuelle2* muelle1;
+PxRigidStatic* suelo;
+PxRigidStatic* pared;
+PxRigidStatic* pared2;
+int counter;
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -96,17 +100,22 @@ void initPhysics(bool interactive)
 	PxMaterial* material = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 	PxMaterial* material2 = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 
-	PxShape* shape = CreateShape(PxBoxGeometry(100.0f, 0.5f, 100.0f),material);
-	PxRigidStatic* suelo=gPhysics->createRigidStatic(tr);
+	PxShape* shape = CreateShape(PxBoxGeometry(100.0f, 0.5f, 140.0f),material);
+	suelo=gPhysics->createRigidStatic(tr);
 	gScene->addActor(*suelo);
 	suelo->attachShape(*shape);
 	RenderItem* item = new RenderItem(shape, suelo, { 0.9f,0.9f,0.9f,1 });
 	PxShape* shape2 = CreateShape(PxBoxGeometry(100.0f, 100.0f, 0.5f),material);
-	PxRigidStatic* pared=gPhysics->createRigidStatic(tr);
+	pared=gPhysics->createRigidStatic(tr);
 	gScene->addActor(*pared);
 	pared->attachShape(*shape2);
 	RenderItem* item2 = new RenderItem(shape2, pared, { 0.9f,0.9f,0.9f,1 });
-	pared->setGlobalPose({ 0,0,-50 });
+	pared->setGlobalPose({ 0,0,70 });
+	pared2=gPhysics->createRigidStatic(tr);
+	gScene->addActor(*pared2);
+	pared2->attachShape(*shape2);
+	RenderItem* item3 = new RenderItem(shape2, pared2, { 0.9f,0.9f,0.9f,1 });
+	pared2->setGlobalPose({ 0,0,-50 });
 	
 	
 	
@@ -256,7 +265,49 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
-	//if(actor1==pelota->getActor())
+	if(actor1==pelota->getActor())
+	{
+		if (actor2 == suelo) {
+			pelota->changeSystem(0);
+			counter++;
+			if(counter>4)
+			{
+				cout << "pierdes" << endl;
+			}
+		}
+		else if(actor2==pared)
+		{
+			pelota->changeSystem(2);
+			pelota->getActor()->addForce({ 0,40,-30 }, PxForceMode::eIMPULSE);
+			counter = 0;
+		}
+		else if (actor2 == pared2)
+		{
+			pelota->changeSystem(1);
+			counter = 0;
+		}
+	}
+	else if(actor2==pelota->getActor())
+	{
+		if (actor1 == suelo) {
+			pelota->changeSystem(0);
+			counter++;
+			if (counter > 4)
+			{
+				cout << "pierdes"<<endl;
+			}
+		}
+		else if (actor1 == pared)
+		{
+			pelota->changeSystem(2);
+			counter = 0;
+		}
+		else if (actor1 == pared2)
+		{
+			pelota->changeSystem(1);
+			counter = 0;
+		}
+	}
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
 }

@@ -28,13 +28,6 @@ ParticleP::~ParticleP()
 
 void ParticleP::integrate(double t)
 {
-	pos.p.x += vel.x * t;
-	pos.p.y += vel.y * t;
-	pos.p.z += vel.z * t;
-	
-	bola->addForce({(float)(accel.x*t),(float)(accel.y*t),(float)(accel.z*t)});
-	accel = { 0,0,0 };
-
 }
 
 bool ParticleP::canDestroy(double t)
@@ -45,5 +38,5 @@ bool ParticleP::canDestroy(double t)
 
 void ParticleP::AddForce(Vector3D fuerza)
 {
-	accel += fuerza * mass;
+		bola->addForce({fuerza.x,fuerza.y,fuerza.z});
 }
