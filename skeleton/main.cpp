@@ -19,6 +19,7 @@
 #include "ExplosionGenerator.h"
 #include "GeneradorMuelle1.h"
 #include "GeneradorMuelle2.h"
+#include "Raqueta.h"
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -55,6 +56,7 @@ GeneradorMuelle2* muelle1;
 PxRigidStatic* suelo;
 PxRigidStatic* pared;
 PxRigidStatic* pared2;
+Raqueta* raq;
 int counter;
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -89,7 +91,7 @@ void initPhysics(bool interactive)
 	torbellino = new TorbellinoGenerator({ 0,0,0 },10, 200);
 	generator = new ParticleGenerator(15, { 0,0,0 }, { 0,0,0 }, { 3,0,3 }, { 0,20,0 }, 5,2, 0, particulaStat);
 	explosion = new ExplosionGenerator({ 0,-5,0 }, 99999, 200, 2);
-	muelle1 = new GeneradorMuelle2(10,5,nullptr,pelota);
+	muelle1 = new GeneradorMuelle2(1000,5,nullptr,pelota);
 	//generator->AddForce(torbellino);
 	generator->AddForce(muelle1);
 	generator->AddForce(explosion);
@@ -104,20 +106,18 @@ void initPhysics(bool interactive)
 	suelo=gPhysics->createRigidStatic(tr);
 	gScene->addActor(*suelo);
 	suelo->attachShape(*shape);
+	suelo->setGlobalPose({50,0,50});
 	RenderItem* item = new RenderItem(shape, suelo, { 0.9f,0.9f,0.9f,1 });
 	PxShape* shape2 = CreateShape(PxBoxGeometry(100.0f, 100.0f, 0.5f),material);
-	pared=gPhysics->createRigidStatic(tr);
-	gScene->addActor(*pared);
-	pared->attachShape(*shape2);
-	RenderItem* item2 = new RenderItem(shape2, pared, { 0.9f,0.9f,0.9f,1 });
-	pared->setGlobalPose({ 0,0,70 });
+	PxShape* shape3 = CreateShape(PxBoxGeometry(40.0f, 40.f, 0.5f),material);
+	
 	pared2=gPhysics->createRigidStatic(tr);
 	gScene->addActor(*pared2);
 	pared2->attachShape(*shape2);
 	RenderItem* item3 = new RenderItem(shape2, pared2, { 0.9f,0.9f,0.9f,1 });
-	pared2->setGlobalPose({ 0,0,-50 });
-	
-	
+	pared2->setGlobalPose({ 50,50,-50 });
+	raq = new Raqueta(gPhysics, gScene);
+	raq->activate();
 	
 	
 	
@@ -158,6 +158,9 @@ void stepPhysics(bool interactive, double t)
 	pelota->AddForce(windGen->getForce(pelota));
 	pelota->integrate(t);
 	explosion->update(t);
+	raq->integrate(t);
+	//tr.q= 
+	
 }
 
 // Function to clean data
@@ -233,7 +236,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case ' ':
 	{
-
+		raq->activate();
 		break;
 	}
 	case'Q':
@@ -265,6 +268,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
+
 	if(actor1==pelota->getActor())
 	{
 		if (actor2 == suelo) {
@@ -272,14 +276,30 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 			counter++;
 			if(counter>4)
 			{
-				cout << "pierdes" << endl;
+			//	cout << "pierdes" << endl;
 			}
 		}
-		else if(actor2==pared)
+		else if(actor2==raq->getActor())
 		{
-			pelota->changeSystem(2);
-			pelota->getActor()->addForce({ 0,40,-30 }, PxForceMode::eIMPULSE);
-			counter = 0;
+			if (raq->isActive()) {
+				//aquí hay que hacer lo de la cámara
+				auto aux = GetCamera()->getDir();
+				aux.normalize();
+				//multiplicamos el vector por una fuerza
+				//y eso es lo que hay que pasarle a la pelota
+				aux = aux * 20;
+				aux.y += 20;
+				aux.z -= 15;
+				pelota->getActor()->clearForce(PxForceMode::eIMPULSE);
+				pelota->getActor()->clearForce();
+				pelota->getActor()->clearTorque();
+				pelota->getActor()->clearTorque(PxForceMode::eIMPULSE);
+				pelota->getActor()->addForce(aux, PxForceMode::eIMPULSE);
+				pelota->changeSystem(2);
+				counter = 0;
+				
+			}
+			
 		}
 		else if (actor2 == pared2)
 		{
@@ -287,27 +307,7 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 			counter = 0;
 		}
 	}
-	else if(actor2==pelota->getActor())
-	{
-		if (actor1 == suelo) {
-			pelota->changeSystem(0);
-			counter++;
-			if (counter > 4)
-			{
-				cout << "pierdes"<<endl;
-			}
-		}
-		else if (actor1 == pared)
-		{
-			pelota->changeSystem(2);
-			counter = 0;
-		}
-		else if (actor1 == pared2)
-		{
-			pelota->changeSystem(1);
-			counter = 0;
-		}
-	}
+
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
 }

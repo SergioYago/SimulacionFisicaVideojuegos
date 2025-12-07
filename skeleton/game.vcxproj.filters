@@ -28,6 +28,7 @@
     <ClCompile Include="ProyectileP.cpp" />
     <ClCompile Include="ParticlePGenerator.cpp" />
     <ClCompile Include="ParticlePSystem.cpp" />
+    <ClCompile Include="Raqueta.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="ProyectileP.h" />
     <ClInclude Include="ParticlePGenerator.h" />
     <ClInclude Include="ParticlePSystem.h" />
+    <ClInclude Include="Raqueta.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

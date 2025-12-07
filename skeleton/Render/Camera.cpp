@@ -62,10 +62,10 @@ bool Camera::handleKey(unsigned char key, int x, int y, float speed)
 	PxVec3 viewY = mDir.cross(PxVec3(0,1,0)).getNormalized();
 	switch(toupper(key))
 	{
-	case 'W':	mEye += mDir*2.0f*speed;		break;
-	case 'S':	mEye -= mDir*2.0f*speed;		break;
-	case 'A':	mEye -= viewY*2.0f*speed;		break;
-	case 'D':	mEye += viewY*2.0f*speed;		break;
+	case 'W':	mEye.x += mDir.x * 2.0f * speed; mEye.z += mDir.z * 2.f * speed;		break;
+	case 'S':	mEye.x -= mDir.x * 2.0f * speed; mEye.z -= mDir.z * 2.f * speed;		break;
+	case 'A':	mEye.z -= viewY.z * 2.0f * speed; mEye.x -= viewY.x * 2.f * speed;		break;
+	case 'D':	mEye.z += viewY.z * 2.0f * speed; mEye.x += viewY.x * 2.f * speed;		break;
 	default:							return false;
 	}
 	return true;
