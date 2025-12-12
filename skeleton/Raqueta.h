@@ -10,6 +10,7 @@ public:
 	PxRigidStatic* getActor() { return body; }
 	void integrate(double t);
 	void activate();
+	void deActivate();
 	bool isActive() { return Active; }
 private:
 	float timeActive=0.5f, timeAct;

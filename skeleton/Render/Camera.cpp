@@ -40,8 +40,8 @@ namespace Snippets
 
 Camera::Camera(const PxVec3& eye, const PxVec3& dir)
 {
-	mEye = eye;
-	mDir = dir.getNormalized();
+	mEyeIni= mEye = eye;
+	mDirIni= mDir = dir.getNormalized();
 	mMouseX = 0;
 	mMouseY = 0;
 }
@@ -66,7 +66,8 @@ bool Camera::handleKey(unsigned char key, int x, int y, float speed)
 	case 'S':	mEye.x -= mDir.x * 2.0f * speed; mEye.z -= mDir.z * 2.f * speed;		break;
 	case 'A':	mEye.z -= viewY.z * 2.0f * speed; mEye.x -= viewY.x * 2.f * speed;		break;
 	case 'D':	mEye.z += viewY.z * 2.0f * speed; mEye.x += viewY.x * 2.f * speed;		break;
-	default:							return false;
+	default:							
+	return false;
 	}
 	return true;
 }
@@ -76,6 +77,12 @@ void Camera::handleAnalogMove(float x, float y)
 	PxVec3 viewY = mDir.cross(PxVec3(0,1,0)).getNormalized();
 	mEye += mDir*y;
 	mEye += viewY*x;
+}
+
+void Camera::resetPos()
+{
+	mEye = mEyeIni;
+	mDir = mDirIni;
 }
 
 void Camera::handleMotion(int x, int y)

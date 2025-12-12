@@ -18,7 +18,7 @@ ParticleP::ParticleP(Vector3D PosD, Vector3D Vel, PxScene* gScene, float Mass, f
 	item = new RenderItem(shape, bola, color);
 	mass = 1 / Mass;
 	lifetime = Lifetime;
-
+	bola->setMass(Mass);
 }
 
 ParticleP::~ParticleP()

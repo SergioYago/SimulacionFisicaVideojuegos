@@ -4,7 +4,7 @@ using namespace std;
 Raqueta::Raqueta(PxPhysics* gPhysics,PxScene* gScene)
 {
 	PxMaterial* material = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
-	tr.p = { 0,0,100 };
+	tr.p = { 0,0,300 };
 	tr.q = PxQuat(PxIdentity);
 	body= gPhysics->createRigidStatic(tr);
 	shape = body->createShape(PxBoxGeometry(30.0f, 30.0f, 2.f), *material);
@@ -22,15 +22,12 @@ void Raqueta::integrate(double t)
 	
 	if (Active) {
 		tr.p = GetCamera()->getEye();
-		tr.p.z -= 5;
+		tr.p.z -= 10;
 		body->setGlobalPose(tr);
 		timeAct += t;
 		if (timeAct >= timeActive)
 		{
-			shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-			Scene->resetFiltering(*body);
-			Active = false;
-			std::cout << "cierra" << endl;
+			deActivate();
 		}
 	}
 	
@@ -44,4 +41,11 @@ void Raqueta::activate()
 	Active = true;
 	std::cout << "abre" << endl;
 	
+}
+
+void Raqueta::deActivate()
+{
+	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+	Scene->resetFiltering(*body);
+	Active = true;
 }

@@ -1,12 +1,12 @@
 #include "Pelota.h"
 
 
-Pelota::Pelota(Vector3D posfinal, PelotaSystem* System, Vector3D pos, Vector3D dir, PxScene* gScene, float mass, float lifetime,float size): ProyectileP(pos,dir,gScene,mass,lifetime,size)
+Pelota::Pelota( PelotaSystem* System, Vector3D pos, Vector3D dir, PxScene* gScene, float mass, float lifetime,float size): ProyectileP(pos,dir,gScene,mass,lifetime,size,{0,1,0,1})
 {
-	posFinal = posfinal;
+	posIni = pos;
 	system = System;
 	msize = size;
-	bola->addForce({ 0,10,-50 }, PxForceMode::eIMPULSE);
+	//bola->addForce({ 0,10,-50 }, PxForceMode::eIMPULSE);
 }
 
 Pelota::~Pelota()
@@ -64,7 +64,11 @@ void Pelota::changeSystem(int n)
 		dirIni = { 0,0,-7.5f };
 		posRange = { 1,1,0 };
 		color = { 0,0,1,1 };
-
+		if(!empeiza)
+		{
+			empeiza = true;
+			bola->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, false);
+		}
 	}
 	system->updatePos(pos);
 	system->updateposRange(posRange);
@@ -72,4 +76,11 @@ void Pelota::changeSystem(int n)
 	system->updatedirRange(dirRange);
 	system->setColor(color);
 	system->Activate();
+}
+
+void Pelota::resetPos()
+{
+	bola->setGlobalPose({ posIni.x,posIni.y,posIni.z });
+	bola->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+	empeiza = false;
 }
