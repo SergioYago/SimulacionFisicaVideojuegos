@@ -24,7 +24,7 @@
 
 std::string display_text = "This is a test";
 
-constexpr int AUDIENCIA = 5;
+constexpr int AUDIENCIA = 6;
 using namespace physx;
 
 PxDefaultAllocator		gAllocator;
@@ -245,45 +245,7 @@ void cleanupPhysics(bool interactive)
 	delete pelotaSystem;
 }
 
-void shoot1()
-{
-	Vector3 aux= GetCamera()->getTransform().p;
-	Vector3D pos = Vector3D(aux.x, aux.y, aux.z);
-	aux= GetCamera()->getDir();
-	Vector3D dir = Vector3D(aux.x, aux.y, aux.z);
-	dir.normalized();
-	
-	//gs = gr(vs^2/vr^2)
-	float gr = 9.81f * ((2.f * 2.f) / (25.f*25.f));
-	
-	pos += dir*3;
 
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5,10, 10));
-	
-}
-void shoot2()
-{
-	Vector3 aux = GetCamera()->getTransform().p;
-	Vector3D pos = Vector3D(aux.x, aux.y, aux.z);
-	aux = GetCamera()->getDir();
-	Vector3D dir = Vector3D(aux.x, aux.y, aux.z);
-	dir.normalized();
-	Vector3D accel = { 0,0,0 };
-	pos += dir*3;
-	float gr = 9.81f * ((10.f * 10.f) / (25.f * 25.f));
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5, 10, 10));
-}
-void shoot3()
-{
-	Vector3 aux = GetCamera()->getTransform().p;
-	Vector3D pos = Vector3D(aux.x, aux.y, aux.z);
-	aux = GetCamera()->getDir();
-	Vector3D dir = Vector3D(aux.x, aux.y, aux.z);
-	dir.normalized();
-	pos += dir * 3;
-	float gr = 9.81f * ((20.f * 20.f) / (25.f * 25.f));
-	proyectiles.push_back(std::make_unique<Proyectile>(pos, dir * 5 ,10, 10));
-}
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
 {
@@ -301,8 +263,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		}
 		break;
 	}
-	case'Q':
-		shoot1();
+	case'R':
+		loose();
 		//pelota->changeSystem(2);
 		break;
 	case'E':
@@ -351,7 +313,7 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 				//multiplicamos el vector por una fuerza
 				//y eso es lo que hay que pasarle a la pelota
 				aux = aux * 100;
-				aux.y += 40;
+				aux.y += 100;
 				aux.z -= 15;
 				pelota->getActor()->clearForce(PxForceMode::eIMPULSE);
 				pelota->getActor()->clearForce();

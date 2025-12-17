@@ -55,6 +55,7 @@ private:
 	physx::PxVec3	mDirIni;
 	int				mMouseX;
 	int				mMouseY;
+	bool crouched = false;
 };
 
 

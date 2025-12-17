@@ -66,6 +66,7 @@ bool Camera::handleKey(unsigned char key, int x, int y, float speed)
 	case 'S':	mEye.x -= mDir.x * 2.0f * speed; mEye.z -= mDir.z * 2.f * speed;		break;
 	case 'A':	mEye.z -= viewY.z * 2.0f * speed; mEye.x -= viewY.x * 2.f * speed;		break;
 	case 'D':	mEye.z += viewY.z * 2.0f * speed; mEye.x += viewY.x * 2.f * speed;		break;
+	case 'Q':	if (crouched) { mEye.y += 10; }else { mEye.y -= 10; } crouched = !crouched;
 	default:							
 	return false;
 	}
@@ -83,6 +84,7 @@ void Camera::resetPos()
 {
 	mEye = mEyeIni;
 	mDir = mDirIni;
+	crouched = false;
 }
 
 void Camera::handleMotion(int x, int y)
