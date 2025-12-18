@@ -55,7 +55,6 @@ ParticleGenerator* confeti1;
 ParticleGenerator* confeti2;
 ExplosionGenerator* explosion1;
 ExplosionGenerator* explosion2;
-GeneradorMuelle1* muelle1;
 PxRigidStatic* suelo;
 PxRigidStatic* pared;
 PxRigidStatic* pared2;
@@ -85,26 +84,31 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	stats particulaStat(10.f,1.f,{1,1,1,1});
+	stats particulaStat(10.f,0.5f,{1,1,1,1});
+	//creacion de la pelota
 	pelotaSystem = new PelotaSystem(20, Vector3D(3, 0, 3), Vector3D(0, 0, 0), Vector3D(2, 0, 2), Vector3D(0.f, 15.0f, 0), 0.75f, 0, 0, particulaStat);
 	pelota =new Pelota(pelotaSystem,{ 50,20,20 }, { 0,0,5 },gScene, 4, 99999999,3);
+	particulaStat.size = 1.f;
+	//creacion de generadores de fuerzas
 	windGen = new GeneradorViento(Vector3D{50,0,0});
 	windGen->setActive(false);
 	gravityGen = new GravityGenerator();
 	pelotaSystem->AddForce(gravityGen);
-	torbellino1 = new TorbellinoGenerator({ -50,0,0 },10, 300);
-	torbellino2 = new TorbellinoGenerator({ 150,0,0 },10, 300);
-	confeti1 = new ParticleGenerator(200, { 0,0,0 }, { -50,0,0 }, { 3,0,3 }, { 0,20,0 }, 1,0.5f, 0, particulaStat);
-	confeti2 = new ParticleGenerator(200, { 0,0,0 }, { 150,0,0 }, { 3,0,3 }, { 0,20,0 }, 1,0.5f, 0, particulaStat);
-	explosion1 = new ExplosionGenerator({ -50,10,0 }, 99999, 200, 2);
-	explosion2 = new ExplosionGenerator({ 150,10,0 }, 99999, 200, 2);
-	muelle1 = new GeneradorMuelle1({0,-20,20},100,30);
+	torbellino1 = new TorbellinoGenerator({ -90,0,0 },10, 300);
+	torbellino2 = new TorbellinoGenerator({ 180,0,0 },10, 300);
+	explosion1 = new ExplosionGenerator({ -90,10,0 }, 99999, 200, 2);
+	explosion2 = new ExplosionGenerator({ 180,10,0 }, 99999, 200, 2);
+	//creación de los 2 generadores de partículas 
+	confeti1 = new ParticleGenerator(200, { 0,0,0 }, { -90,0,0 }, { 3,0,3 }, { 0,20,0 }, 1,0.5f, 0, particulaStat,true);
+	confeti2 = new ParticleGenerator(200, { 0,0,0 }, { 180,0,0 }, { 3,0,3 }, { 0,20,0 }, 1,0.5f, 0, particulaStat,true);
+	//se les añaden las fuerzas
 	confeti1->AddForce(torbellino1);
 	confeti1->AddForce(explosion1);
 	confeti1->AddForce(gravityGen);
 	confeti2->AddForce(torbellino2);
 	confeti2->AddForce(explosion2);
 	confeti2->AddForce(gravityGen);
+	//creación de pared y suelo
 	PxTransform tr;
 	tr.p = { 0,0,0 };
 	tr.q = PxQuat(PxIdentity);
@@ -125,36 +129,35 @@ void initPhysics(bool interactive)
 	pared2->attachShape(*shape2);
 	RenderItem* item3 = new RenderItem(shape2, pared2, { 0.9f,0.9f,0.9f,1 });
 	pared2->setGlobalPose({ 50,50,-50 });
+	//creación de la raqueta
 	raq = new Raqueta(gPhysics, gScene);
 	raq->activate();
+	//para que empieze la pelota sin moverse del centro
 	pelota->resetPos();
-	float posy = 15.f;
+	//generación de la audiencia
+	srand(time(0));
+	int min = 13, max = 22;
+	float posy = 0;
+	float posx = -100;
 	for (float i = 0; i < AUDIENCIA; i+=1) {
-		
-		//si se pasa de 0 entonces se resetea
-		ProyectileP* aux= new ProyectileP({ -40,posy,-i*20.f+120.f }, { 0,0,0 }, gScene, 2, 99999, 4, { 1,0,0,1 });
-		GeneradorMuelle1* aux2 = new GeneradorMuelle1({ -40,-20,-i * 20.f + 120.f }, 100, 30);
+		//se generan de manera aleatoria para que parezca menos uniforme
+		posy = min + (rand() % (max - min + 1));
+		ProyectileP* aux= new ProyectileP({ posx,posy,-i*20.f+120.f }, { 0,0,0 }, gScene, 2, 99999, 4, { 1,0,0,1 },true);
+		GeneradorMuelle1* aux2 = new GeneradorMuelle1({ posx,-20,-i * 20.f + 120.f }, 100, 30);
 		audiencia.push_back({ aux,aux2 });
-		if (posy == 25.f)
-		{
-			posy = 10.f;
-		}
 		
-		posy += 5.f;
 	}
-	posy = 15.f;
+	posx = 190;
 	for (float i = 0; i < AUDIENCIA; i+=1) {
-		
-		//si se pasa de 0 entonces se resetea
-		ProyectileP* aux= new ProyectileP({120,posy,-i*20.f+120.f }, { 0,0,0 }, gScene, 2, 99999, 4, { 1,0,0,1 });
-		GeneradorMuelle1* aux2 = new GeneradorMuelle1({ 120,-20,-i * 20.f + 120.f }, 100, 30);
-		audiencia.push_back({ aux,aux2 });
-		if (posy == 25.f)
+		while (posy >= 8 && posy <= 12)
 		{
-			posy = 10.f;
+			posy = min + (rand() % (max - min + 1));
 		}
-		
-		posy += 5.f;
+		//si se pasa de 0 entonces se resetea
+		ProyectileP* aux= new ProyectileP({posx,posy,-i*20.f+120.f }, { 0,0,0 }, gScene, 2, 99999, 4, { 1,0,0,1 },true);
+		GeneradorMuelle1* aux2 = new GeneradorMuelle1({ posx,-20,-i * 20.f + 120.f }, 100, 30);
+		audiencia.push_back({ aux,aux2 });
+		posy = 10;
 	}
 	
 
@@ -170,7 +173,7 @@ void loose()
 	pelota->getActor()->clearTorque();
 	pelota->getActor()->clearTorque(PxForceMode::eIMPULSE);
 	pelota->getActor()->setLinearVelocity({ 0,0,0 });
-	
+	juego_empieza = false;
 }
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
@@ -206,18 +209,22 @@ void stepPhysics(bool interactive, double t)
 	}
 	if (juego_empieza)
 	{ 
-		pelota->AddForce(gravityGen->getForce(pelota)); 
+		pelota->AddForce(gravityGen->getForce(pelota));
+		pelota->AddForce(windGen->getForce(pelota));
 	}
-	pelota->AddForce(windGen->getForce(pelota));
+	
+		
+
 	pelota->integrate(t);
 	explosion1->update(t);
 	explosion2->update(t);
 	raq->integrate(t);
-	//tr.q= 
-	if (pelota->getActor()->getGlobalPose().p.y < -10) { loose(); }
+	PxTransform pelotaTR = pelota->getActor()->getGlobalPose();
+	if (pelotaTR.p.y < -10||pelotaTR.p.x>160||pelotaTR.p.x<-60||pelotaTR.p.z>200||pelotaTR.p.z<-60) { loose(); }
 for(int i=0;i<audiencia.size();i++)
 {
 	audiencia[i].first->AddForce(audiencia[i].second->getForce(audiencia[i].first));
+	audiencia[i].first->integrate(t);
 }
 }
 
@@ -243,6 +250,7 @@ void cleanupPhysics(bool interactive)
 		proyectiles.pop_back();
 	}
 	delete pelotaSystem;
+	
 }
 
 
@@ -257,10 +265,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case ' ':
 	{
-		if (GetCamera()->getEye().z >= pelota->getActor()->getGlobalPose().p.z + 3) {
+		//if (GetCamera()->getEye().z >= pelota->getActor()->getGlobalPose().p.z + 3) {
 			//haaaaaah?
 			raq->activate();
-		}
+		//}
 		break;
 	}
 	case'R':
@@ -276,6 +284,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case'G':
 		torbellino1->setActive(!torbellino1->isActive());
+		torbellino2->setActive(!torbellino2->isActive());
 		break;
 	case'H':
 		windGen->setActive(!windGen->isActive());
@@ -321,8 +330,10 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 				pelota->getActor()->clearTorque(PxForceMode::eIMPULSE);
 				pelota->getActor()->addForce(aux, PxForceMode::eIMPULSE);
 				pelota->changeSystem(2);
-				counter = 0;
+				
 				raq->deActivate();
+				juego_empieza = true;
+				counter = 0;
 			}
 			
 		}

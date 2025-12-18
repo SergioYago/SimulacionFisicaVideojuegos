@@ -3,7 +3,7 @@
 
 std::default_random_engine ParticleGenerator::gen(std::random_device{}());
 
-ParticleGenerator::ParticleGenerator(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timerange, float ypendiente, stats ParticulaB)
+ParticleGenerator::ParticleGenerator(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timerange, float ypendiente, stats ParticulaB,bool arcoiris)
 {
 	nParticles = 0;
 	maxParticles = n;
@@ -16,7 +16,10 @@ ParticleGenerator::ParticleGenerator(int n, Vector3D pRange, Vector3D IniPos, Ve
 	yPendiente = ypendiente;
 	dist = std::normal_distribution<float>(0, 1);
 	particulaB = ParticulaB;
+	arcoIris = arcoiris;
 }
+
+
 
 ParticleGenerator::~ParticleGenerator()
 {
@@ -61,7 +64,7 @@ void ParticleGenerator::createParticle()
 	float lifetime;
 	lifetime = iniTime + dist(gen) * timeRange;
 	Vector3D accel = { 0,0,0 };
-	particles.push_back(std::make_unique<Particle>(pos, dir,particulaB.mass, lifetime,particulaB.size,particulaB.color));
+	particles.push_back(std::make_unique<Particle>(pos, dir,particulaB.mass, lifetime,particulaB.size,particulaB.color,arcoIris));
 }
 
 Vector3D ParticleGenerator::generateRandom(Vector3D ini, Vector3D range)

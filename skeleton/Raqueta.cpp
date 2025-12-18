@@ -7,7 +7,7 @@ Raqueta::Raqueta(PxPhysics* gPhysics,PxScene* gScene)
 	tr.p = { 0,0,300 };
 	tr.q = PxQuat(PxIdentity);
 	body= gPhysics->createRigidStatic(tr);
-	shape = body->createShape(PxBoxGeometry(30.0f, 30.0f, 2.f), *material);
+	shape = body->createShape(PxBoxGeometry(30.0f, 30.0f, 5.f), *material);
 	body->attachShape(*shape);
 	shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
 	

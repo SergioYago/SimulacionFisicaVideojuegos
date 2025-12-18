@@ -17,7 +17,7 @@ public:
 class ParticleP
 {
 public:
-	ParticleP(Vector3D PosD, Vector3D Vel, PxScene* gScene, float Mass, float Lifetime = 10.f, float size = 1.f, Vector4 color = { 1,1,1,1 });
+	ParticleP(Vector3D PosD, Vector3D Vel, PxScene* gScene, float Mass, float Lifetime = 10.f, float size = 1.f, Vector4 color = { 1,1,1,1 },bool arcoiris=false);
 	~ParticleP();
 	virtual void integrate(double t);
 	Vector3D getVel() { return vel; }
@@ -27,12 +27,17 @@ public:
 	bool canDestroy(double t);
 	void AddForce(Vector3D fuerza);
 	PxRigidDynamic* getActor() { return bola; }
+	
 private:
 	Vector3D vel = Vector3D(), accel = Vector3D();
 	PxTransform pos;
 	RenderItem* item;
-	float lifetime, mass;
-	
+	float lifetime, mass,time;
+	bool arcoIris;
+	Vector3 lerp(const Vector3& a, const Vector3& b, float t)
+	{
+		return a + t * (b - a);
+	}
 protected:
 	PxRigidDynamic* bola;
 };

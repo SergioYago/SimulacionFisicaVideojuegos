@@ -3,7 +3,7 @@
 class ParticleGenerator: public ParticleSystem
 {
 public:
-	ParticleGenerator(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timeRange, float yPendiente,stats ParticulaB);
+	ParticleGenerator(int n, Vector3D pRange, Vector3D IniPos, Vector3D dRange, Vector3D IniDir, float initime, float timeRange, float yPendiente,stats ParticulaB,bool arcoiris=false);
 	~ParticleGenerator();
 	virtual void update(double t);
 	void updatePos(Vector3D newPos) { iniPos = newPos; };
@@ -24,5 +24,6 @@ private:
 	static std::default_random_engine gen;
 	stats particulaB;
 	float yPendiente;
+	bool arcoIris;
 };
 

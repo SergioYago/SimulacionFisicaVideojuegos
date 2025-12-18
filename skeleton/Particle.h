@@ -18,7 +18,7 @@ public:
 class Particle
 {
 public:
-	Particle(Vector3D PosD, Vector3D Vel,float Mass, float Lifetime = 10.f,float size=1.f, Vector4 color={1,1,1,1});
+	Particle(Vector3D PosD, Vector3D Vel,float Mass, float Lifetime = 10.f,float size=1.f, Vector4 color={1,1,1,1},bool arcoiris=false);
 	~Particle();
 	virtual void integrate(double t);
 	Vector3D getVel() { return vel; }
@@ -31,6 +31,12 @@ private:
 	Vector3D vel=Vector3D(), accel=Vector3D();
 	PxTransform pos;
 	RenderItem* item;
-	float lifetime, mass;
+	float lifetime, mass,time;
+	bool arcoIris;
+	Vector3 lerp(const Vector3& a, const Vector3& b, float t)
+	{
+		return a + t * (b - a);
+	}
+
 };
 
